@@ -14,6 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import com.raffastudioproducoes.minharota.ui.components.ScaffoldPrincipal
 import com.raffastudioproducoes.minharota.ui.navigation.Rota
 import com.raffastudioproducoes.minharota.ui.screens.hoje.HojeScreen
+import com.raffastudioproducoes.minharota.ui.screens.caixas.CaixasScreen
 
 @Composable
 fun MainAppContent() {
@@ -27,7 +28,7 @@ fun MainAppContent() {
         ) {
             composable(Rota.Hoje.route) { HojeScreen() }
             composable(Rota.Contas.route) { ScreenPlaceholder("Tela Contas") }
-            composable(Rota.Caixas.route) { ScreenPlaceholder("Tela Caixas") }
+            composable(Rota.Caixas.route) { CaixasScreen() }
             composable(Rota.Graficos.route) { ScreenPlaceholder("Tela Gráficos") }
         }
     }
