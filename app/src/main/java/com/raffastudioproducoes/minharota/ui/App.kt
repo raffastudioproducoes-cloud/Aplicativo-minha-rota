@@ -15,6 +15,8 @@ import com.raffastudioproducoes.minharota.ui.components.ScaffoldPrincipal
 import com.raffastudioproducoes.minharota.ui.navigation.Rota
 import com.raffastudioproducoes.minharota.ui.screens.hoje.HojeScreen
 import com.raffastudioproducoes.minharota.ui.screens.caixas.CaixasScreen
+import com.raffastudioproducoes.minharota.ui.screens.contas.ContasScreen
+import com.raffastudioproducoes.minharota.ui.screens.graficos.GraficosScreen
 
 @Composable
 fun MainAppContent() {
@@ -27,9 +29,9 @@ fun MainAppContent() {
             modifier = Modifier.padding(paddingValues)
         ) {
             composable(Rota.Hoje.route) { HojeScreen() }
-            composable(Rota.Contas.route) { ScreenPlaceholder("Tela Contas") }
+            composable(Rota.Contas.route) { ContasScreen() }
             composable(Rota.Caixas.route) { CaixasScreen() }
-            composable(Rota.Graficos.route) { ScreenPlaceholder("Tela Gráficos") }
+            composable(Rota.Graficos.route) { GraficosScreen() }
         }
     }
 }
