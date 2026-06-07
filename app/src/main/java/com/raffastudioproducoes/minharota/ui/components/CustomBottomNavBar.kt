@@ -27,7 +27,10 @@ import com.raffastudioproducoes.minharota.ui.navigation.Rota
 import com.raffastudioproducoes.minharota.ui.navigation.itensNavegacao
 
 @Composable
-fun CustomBottomNavBar(navController: NavController) {
+fun CustomBottomNavBar(
+    navController: NavController,
+    onFabClick: () -> Unit
+) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
@@ -92,7 +95,7 @@ fun CustomBottomNavBar(navController: NavController) {
 
         // FAB Centralizado
         FloatingActionButton(
-            onClick = { /* Ação de adicionar futura */ },
+            onClick = onFabClick,
             modifier = Modifier
                 .align(Alignment.TopCenter)
                 .offset(y = 0.dp)
