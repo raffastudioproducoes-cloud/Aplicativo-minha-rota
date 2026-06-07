@@ -12,6 +12,8 @@ sealed class Rota(val route: String, val title: String, val icon: ImageVector) {
     object Contas : Rota("contas", "Contas", Icons.Default.AccountBalanceWallet)
     object Caixas : Rota("caixas", "Caixas", Icons.Default.Inventory2)
     object Graficos : Rota("graficos", "Gráficos", Icons.Default.BarChart)
+    object Garagem : Rota("garagem", "Garagem", Icons.Default.TwoWheeler)
+    object Extrato : Rota("extrato", "Extrato", Icons.Default.ReceiptLong)
 }
 
 val itensNavegacao = listOf(

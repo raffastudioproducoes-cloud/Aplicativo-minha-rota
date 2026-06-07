@@ -17,6 +17,8 @@ import com.raffastudioproducoes.minharota.ui.screens.hoje.HojeScreen
 import com.raffastudioproducoes.minharota.ui.screens.caixas.CaixasScreen
 import com.raffastudioproducoes.minharota.ui.screens.contas.ContasScreen
 import com.raffastudioproducoes.minharota.ui.screens.graficos.GraficosScreen
+import com.raffastudioproducoes.minharota.ui.screens.garagem.GaragemScreen
+import com.raffastudioproducoes.minharota.ui.screens.extrato.ExtratoScreen
 
 @Composable
 fun MainAppContent() {
@@ -32,6 +34,8 @@ fun MainAppContent() {
             composable(Rota.Contas.route) { ContasScreen() }
             composable(Rota.Caixas.route) { CaixasScreen() }
             composable(Rota.Graficos.route) { GraficosScreen() }
+            composable(Rota.Garagem.route) { GaragemScreen() }
+            composable(Rota.Extrato.route) { ExtratoScreen() }
         }
     }
 }

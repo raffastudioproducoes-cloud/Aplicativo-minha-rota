@@ -11,9 +11,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.raffastudioproducoes.minharota.ui.navigation.Rota
 
 @Composable
-fun DrawerConteudo(onClose: () -> Unit) {
+fun DrawerConteudo(navController: NavController, onClose: () -> Unit) {
     ModalDrawerSheet(
         modifier = Modifier.fillMaxHeight(),
         drawerContainerColor = MaterialTheme.colorScheme.surface
@@ -41,9 +43,15 @@ fun DrawerConteudo(onClose: () -> Unit) {
         Spacer(modifier = Modifier.height(16.dp))
 
         DrawerItem(Icons.Default.Person, "Perfil", onClose)
-        DrawerItem(Icons.Default.ReceiptLong, "Extrato", onClose)
+        DrawerItem(Icons.Default.ReceiptLong, "Extrato") {
+            navController.navigate(Rota.Extrato.route)
+            onClose()
+        }
         DrawerItem(Icons.Default.MoneyOff, "Dívidas", onClose)
-        DrawerItem(Icons.Default.TwoWheeler, "Garagem", onClose)
+        DrawerItem(Icons.Default.TwoWheeler, "Garagem") {
+            navController.navigate(Rota.Garagem.route)
+            onClose()
+        }
         
         Spacer(modifier = Modifier.weight(1f))
         

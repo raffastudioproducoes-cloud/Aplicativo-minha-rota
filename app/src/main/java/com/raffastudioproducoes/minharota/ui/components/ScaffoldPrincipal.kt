@@ -18,9 +18,12 @@ fun ScaffoldPrincipal(
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            DrawerConteudo(onClose = {
-                scope.launch { drawerState.close() }
-            })
+            DrawerConteudo(
+                navController = navController,
+                onClose = {
+                    scope.launch { drawerState.close() }
+                }
+            )
         }
     ) {
         Scaffold(
