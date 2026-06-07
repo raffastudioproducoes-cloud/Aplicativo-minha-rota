@@ -6,7 +6,10 @@ import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.Inventory2
 import androidx.compose.material.icons.filled.Today
 import androidx.compose.material.icons.filled.TwoWheeler
+import androidx.compose.material.icons.filled.MoneyOff
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ReceiptLong
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class Rota(val route: String, val title: String, val icon: ImageVector) {
@@ -16,6 +19,9 @@ sealed class Rota(val route: String, val title: String, val icon: ImageVector) {
     object Graficos : Rota("graficos", "Gráficos", Icons.Default.BarChart)
     object Garagem : Rota("garagem", "Garagem", Icons.Default.TwoWheeler)
     object Extrato : Rota("extrato", "Extrato", Icons.Default.ReceiptLong)
+    object Dividas : Rota("dividas", "Dívidas", Icons.Default.MoneyOff)
+    object Perfil : Rota("perfil", "Perfil", Icons.Default.Person)
+    object Configuracoes : Rota("configuracoes", "Configurações", Icons.Default.Settings)
 }
 
 val itensNavegacao = listOf(
