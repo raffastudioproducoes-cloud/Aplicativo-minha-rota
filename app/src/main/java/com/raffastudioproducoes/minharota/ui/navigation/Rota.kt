@@ -5,6 +5,8 @@ import androidx.compose.material.icons.filled.AccountBalanceWallet
 import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.Inventory2
 import androidx.compose.material.icons.filled.Today
+import androidx.compose.material.icons.filled.TwoWheeler
+import androidx.compose.material.icons.filled.ReceiptLong
 import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class Rota(val route: String, val title: String, val icon: ImageVector) {
