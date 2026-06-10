@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ReceiptLong
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Today
+import androidx.compose.material.icons.outlined.TwoWheeler
 import com.raffastudioproducoes.minharota.ui.navigation.itensNavegacao
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -84,7 +85,7 @@ fun DrawerConteudo(navController: NavController, onClose: () -> Unit) {
             navController.navigate(Rota.Dividas.route)
             onClose()
         }
-        DrawerItem(Icons.Default.TwoWheeler, "Garagem") {
+        DrawerItem(Icons.Outlined.TwoWheeler, "Garagem") {
             navController.navigate(Rota.Garagem.route)
             onClose()
         }
