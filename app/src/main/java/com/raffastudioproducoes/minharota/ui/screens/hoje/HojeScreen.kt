@@ -15,6 +15,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.raffastudioproducoes.minharota.ui.components.CardTurno
+import com.raffastudioproducoes.minharota.ui.components.TimeInput
 
 @Composable
 fun HojeScreen(viewModel: HojeViewModel = viewModel()) {
@@ -23,6 +24,13 @@ fun HojeScreen(viewModel: HojeViewModel = viewModel()) {
     val ganhoBruto by viewModel.ganhoBruto.collectAsState()
     val custoRua by viewModel.custoRua.collectAsState()
     val ganhoLiquido by viewModel.ganhoLiquido.collectAsState()
+    val valorPorHora by viewModel.valorPorHora.collectAsState()
+    val horasTrabalhadas by viewModel.horasTrabalhadas.collectAsState()
+    val horaInicio by viewModel.horaInicio.collectAsState()
+    val horaFim by viewModel.horaFim.collectAsState()
+    val houvePausa by viewModel.houvePausa.collectAsState()
+    val horaInicioPausa by viewModel.horaInicioPausa.collectAsState()
+    val horaFimPausa by viewModel.horaFimPausa.collectAsState()
     
     // Estados locais para o texto do input (evita bugs de digitação com double)
     var ganhoBrutoText by remember { mutableStateOf(if (ganhoBruto == 0.0) "" else ganhoBruto.toString()) }
@@ -48,12 +56,13 @@ fun HojeScreen(viewModel: HojeViewModel = viewModel()) {
             .padding(bottom = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        CardTurno(
-            horasTrabalhadas = "00:00",
-            ganhoBruto = ganhoBruto,
-            custoRua = custoRua,
-            ganhoLiquido = ganhoLiquido
-        )
+            CardTurno(
+                horasTrabalhadas = horasTrabalhadas,
+                ganhoBruto = ganhoBruto,
+                custoRua = custoRua,
+                ganhoLiquido = ganhoLiquido,
+                valorPorHora = valorPorHora
+            )
 
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -68,6 +77,42 @@ fun HojeScreen(viewModel: HojeViewModel = viewModel()) {
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold
             )
+
+            TimeInput(
+                label = "Hora de Início",
+                selectedTime = horaInicio,
+                onTimeSelected = { viewModel.updateHoraInicio(it) }
+            )
+
+            TimeInput(
+                label = "Hora de Término",
+                selectedTime = horaFim,
+                onTimeSelected = { viewModel.updateHoraFim(it) }
+            )
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Checkbox(
+                    checked = houvePausa,
+                    onCheckedChange = { viewModel.updateHouvePausa(it) }
+                )
+                Text("Houve intervalo / pausa?")
+            }
+
+            if (houvePausa) {
+                TimeInput(
+                    label = "Início do Intervalo",
+                    selectedTime = horaInicioPausa,
+                    onTimeSelected = { viewModel.updateHoraInicioPausa(it) }
+                )
+                TimeInput(
+                    label = "Fim do Intervalo",
+                    selectedTime = horaFimPausa,
+                    onTimeSelected = { viewModel.updateHoraFimPausa(it) }
+                )
+            }
 
             OutlinedTextField(
                 value = ganhoBrutoText,

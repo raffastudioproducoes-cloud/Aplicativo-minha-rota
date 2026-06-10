@@ -9,6 +9,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import java.text.SimpleDateFormat
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 import java.util.*
 
 class HojeViewModel : ViewModel() {
@@ -21,17 +24,33 @@ class HojeViewModel : ViewModel() {
     private val _ganhoLiquido = MutableStateFlow(0.0)
     val ganhoLiquido: StateFlow<Double> = _ganhoLiquido.asStateFlow()
 
-    private val _horaInicio = MutableStateFlow("--:--")
+    private val _valorPorHora = MutableStateFlow(0.0)
+    val valorPorHora: StateFlow<Double> = _valorPorHora.asStateFlow()
+
+    private val _horasTrabalhadas = MutableStateFlow("00:00")
+    val horasTrabalhadas: StateFlow<String> = _horasTrabalhadas.asStateFlow()
+
+    private val _horaInicio = MutableStateFlow("")
     val horaInicio: StateFlow<String> = _horaInicio.asStateFlow()
 
-    private val _horaFim = MutableStateFlow("--:--")
+    private val _horaFim = MutableStateFlow("")
     val horaFim: StateFlow<String> = _horaFim.asStateFlow()
+
+    private val _houvePausa = MutableStateFlow(false)
+    val houvePausa: StateFlow<Boolean> = _houvePausa.asStateFlow()
+
+    private val _horaInicioPausa = MutableStateFlow("")
+    val horaInicioPausa: StateFlow<String> = _horaInicioPausa.asStateFlow()
+
+    private val _horaFimPausa = MutableStateFlow("")
+    val horaFimPausa: StateFlow<String> = _horaFimPausa.asStateFlow()
 
     private val _corridasAtuais = MutableStateFlow<List<Corrida>>(emptyList())
 
     fun updateGanhoBruto(valor: Double) {
         _ganhoBruto.value = valor
         calcularLiquido()
+        calcularHorasTrabalhadas()
     }
 
     fun updateCustoRua(valor: Double) {
@@ -63,6 +82,9 @@ class HojeViewModel : ViewModel() {
             data = hoje,
             horaInicio = _horaInicio.value,
             horaFim = _horaFim.value,
+            houvePausa = _houvePausa.value,
+            horaInicioPausa = _horaInicioPausa.value,
+            horaFimPausa = _horaFimPausa.value,
             ganhoBruto = _ganhoBruto.value,
             custoRua = _custoRua.value,
             ganhoLiquido = _ganhoLiquido.value,
@@ -81,8 +103,70 @@ class HojeViewModel : ViewModel() {
         _ganhoBruto.value = 0.0
         _custoRua.value = 0.0
         _ganhoLiquido.value = 0.0
-        _horaInicio.value = "--:--"
-        _horaFim.value = "--:--"
+        _horaInicio.value = ""
+        _horaFim.value = ""
+        _houvePausa.value = false
+        _horaInicioPausa.value = ""
+        _horaFimPausa.value = ""
         _corridasAtuais.value = emptyList()
+    }
+
+    fun updateHoraInicio(hora: String) {
+        _horaInicio.value = hora
+        calcularHorasTrabalhadas()
+    }
+
+    fun updateHoraFim(hora: String) {
+        _horaFim.value = hora
+        calcularHorasTrabalhadas()
+    }
+
+    fun updateHouvePausa(houve: Boolean) {
+        _houvePausa.value = houve
+        if (!houve) {
+            _horaInicioPausa.value = ""
+            _horaFimPausa.value = ""
+        }
+        calcularHorasTrabalhadas()
+    }
+
+    fun updateHoraInicioPausa(hora: String) {
+        _horaInicioPausa.value = hora
+        calcularHorasTrabalhadas()
+    }
+
+    fun updateHoraFimPausa(hora: String) {
+        _horaFimPausa.value = hora
+        calcularHorasTrabalhadas()
+    }
+
+    private fun calcularHorasTrabalhadas() {
+        val formatter = DateTimeFormatter.ofPattern("HH:mm")
+        var totalMinutes = 0L
+
+        try {
+            if (_horaInicio.value.isNotBlank() && _horaFim.value.isNotBlank()) {
+                val inicio = LocalTime.parse(_horaInicio.value, formatter)
+                val fim = LocalTime.parse(_horaFim.value, formatter)
+                totalMinutes = ChronoUnit.MINUTES.between(inicio, fim)
+
+                if (_houvePausa.value && _horaInicioPausa.value.isNotBlank() && _horaFimPausa.value.isNotBlank()) {
+                    val inicioPausa = LocalTime.parse(_horaInicioPausa.value, formatter)
+                    val fimPausa = LocalTime.parse(_horaFimPausa.value, formatter)
+                    val minutosPausa = ChronoUnit.MINUTES.between(inicioPausa, fimPausa)
+                    totalMinutes -= minutosPausa
+                }
+            }
+        } catch (e: Exception) {
+            totalMinutes = 0L
+        }
+
+        if (totalMinutes < 0) totalMinutes = 0
+
+        val hours = totalMinutes / 60
+        val minutes = totalMinutes % 60
+        _horasTrabalhadas.value = String.format("%02d:%02d", hours, minutes)
+        
+        _valorPorHora.value = if (totalMinutes > 0) _ganhoBruto.value / (totalMinutes / 60.0) else 0.0
     }
 }

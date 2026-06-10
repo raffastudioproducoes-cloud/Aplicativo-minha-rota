@@ -9,30 +9,28 @@ import androidx.compose.material.icons.filled.ArrowDownward
 import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.raffastudioproducoes.minharota.domain.model.Movimentacao
 import com.raffastudioproducoes.minharota.ui.theme.VerdeEntrada
 
-data class MovimentacaoMock(
-    val tipo: String, // "ENTRADA" ou "SAIDA"
-    val descricao: String,
-    val data: String,
-    val valor: Double
-)
-
 @Composable
-fun ExtratoScreen() {
-    val movimentacoes = remember {
-        listOf(
-            MovimentacaoMock("ENTRADA", "Ganho do Dia", "Hoje", 150.0),
-            MovimentacaoMock("SAIDA", "Gasolina", "Hoje", 45.0),
-            MovimentacaoMock("ENTRADA", "Ganho do Dia", "Ontem", 185.0),
-            MovimentacaoMock("SAIDA", "Lanche", "Ontem", 22.0)
-        )
+fun ExtratoScreen(viewModel: ExtratoViewModel = viewModel()) {
+    val context = LocalContext.current
+    val movimentacoes by viewModel.movimentacoes.collectAsState()
+    val filtroSelecionado by viewModel.filtroSelecionado.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.carregarMovimentacoes(context)
     }
 
     Column(modifier = Modifier.fillMaxSize()) {
@@ -50,9 +48,10 @@ fun ExtratoScreen() {
                 .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            FilterChip(selected = true, onClick = {}, label = { Text("7 dias") })
-            FilterChip(selected = false, onClick = {}, label = { Text("15 dias") })
-            FilterChip(selected = false, onClick = {}, label = { Text("Mês") })
+            FilterChip(selected = filtroSelecionado == "7 dias", onClick = { viewModel.aplicarFiltro("7 dias") }, label = { Text("7 dias") })
+            FilterChip(selected = filtroSelecionado == "15 dias", onClick = { viewModel.aplicarFiltro("15 dias") }, label = { Text("15 dias") })
+            FilterChip(selected = filtroSelecionado == "Este mês", onClick = { viewModel.aplicarFiltro("Este mês") }, label = { Text("Este mês") })
+            FilterChip(selected = filtroSelecionado == "Todos", onClick = { viewModel.aplicarFiltro("Todos") }, label = { Text("Todos") })
         }
 
         // Card de Resumo
@@ -92,7 +91,7 @@ fun ResumoColuna(label: String, valor: String, cor: Color) {
 }
 
 @Composable
-fun CardMovimentacao(mov: MovimentacaoMock) {
+fun CardMovimentacao(mov: Movimentacao) {
     ListItem(
         headlineContent = { Text(mov.descricao, fontWeight = FontWeight.Bold) },
         supportingContent = { Text(mov.data) },

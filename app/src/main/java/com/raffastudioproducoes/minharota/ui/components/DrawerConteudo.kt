@@ -2,7 +2,16 @@ package com.raffastudioproducoes.minharota.ui.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.AccountBalanceWallet
+import androidx.compose.material.icons.filled.BarChart
+import androidx.compose.material.icons.filled.Inventory2
+import androidx.compose.material.icons.filled.MoneyOff
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.ReceiptLong
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Today
+import com.raffastudioproducoes.minharota.ui.navigation.itensNavegacao
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,27 +34,48 @@ fun DrawerConteudo(navController: NavController, onClose: () -> Unit) {
                 .fillMaxWidth()
                 .padding(24.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.End
         ) {
-            Text(
-                text = "MinhaRota",
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary
-            )
             IconButton(onClick = onClose) {
                 Icon(Icons.Default.Close, contentDescription = "Fechar Menu")
             }
         }
+        
+        Text(
+            text = "MinhaRota",
+            style = MaterialTheme.typography.headlineSmall,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.padding(horizontal = 24.dp)
+        )
 
         Divider(modifier = Modifier.padding(horizontal = 16.dp))
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        DrawerItem(Icons.Default.Person, "Perfil") {
-            navController.navigate(Rota.Perfil.route)
-            onClose()
+        Text(
+            text = "Navegação Principal",
+            style = MaterialTheme.typography.labelLarge,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+        )
+        itensNavegacao.forEach { item ->
+            DrawerItem(item.icon, item.title) {
+                navController.navigate(item.route) {
+                    popUpTo(navController.graph.startDestinationId) { saveState = true }
+                    launchSingleTop = true
+                    restoreState = true
+                }
+                onClose()
+            }
         }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(
+            text = "Outros",
+            style = MaterialTheme.typography.labelLarge,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+        )
         DrawerItem(Icons.Default.ReceiptLong, "Extrato") {
             navController.navigate(Rota.Extrato.route)
             onClose()
@@ -58,14 +88,16 @@ fun DrawerConteudo(navController: NavController, onClose: () -> Unit) {
             navController.navigate(Rota.Garagem.route)
             onClose()
         }
-        
-        Spacer(modifier = Modifier.weight(1f))
-        
         DrawerItem(Icons.Default.Settings, "Configurações") {
             navController.navigate(Rota.Configuracoes.route)
             onClose()
         }
-        
+        DrawerItem(Icons.Default.Person, "Perfil") {
+            navController.navigate(Rota.Perfil.route)
+            onClose()
+        }
+
+        Spacer(modifier = Modifier.weight(1f))
         Spacer(modifier = Modifier.height(16.dp))
     }
 }

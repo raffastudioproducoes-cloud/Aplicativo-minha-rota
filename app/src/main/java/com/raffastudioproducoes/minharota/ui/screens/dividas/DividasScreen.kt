@@ -8,37 +8,40 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.raffastudioproducoes.minharota.domain.model.Divida
 import com.raffastudioproducoes.minharota.ui.theme.VerdeEntrada
 
-data class DividaMock(val credor: String, val valorTotal: Double, val valorPago: Double)
-
 @Composable
-fun DividasScreen() {
-    val dividas = remember {
-        listOf(
-            DividaMock("Banco X", 5000.0, 1200.0),
-            DividaMock("Empréstimo Amigo", 800.0, 400.0),
-            DividaMock("Consórcio", 15000.0, 3500.0)
-        )
+fun DividasScreen(viewModel: DividasViewModel = viewModel()) {
+    val context = LocalContext.current
+    val dividas by viewModel.dividas.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.carregarDividas(context)
     }
 
     val totalEmAberto = dividas.sumOf { it.valorTotal - it.valorPago }
     val totalPago = dividas.sumOf { it.valorPago }
 
     Column(modifier = Modifier.fillMaxSize()) {
-        Text(
-            text = "Minhas Dívidas",
-            style = MaterialTheme.typography.headlineSmall,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(16.dp)
-        )
+            Text(
+                text = "Minhas Dívidas",
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(16.dp)
+            )
+            // TODO: Adicionar botão para adicionar nova dívida aqui, se necessário
 
         // Card de Totalizadores
         Card(
@@ -54,22 +57,22 @@ fun DividasScreen() {
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(text = "Em aberto", style = MaterialTheme.typography.labelSmall)
-                    Text(
-                        text = "R$ ${String.format("%.2f", totalEmAberto)}",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = Color(0xFFE57373)
-                    )
+                Text(
+                    text = "R$ ${String.format("%.2f", dividas.sumOf { it.valorTotal - it.valorPago })}",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFFE57373)
+                )
                 }
                 VerticalDivider(modifier = Modifier.height(40.dp))
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(text = "Total Pago", style = MaterialTheme.typography.labelSmall)
-                    Text(
-                        text = "R$ ${String.format("%.2f", totalPago)}",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = VerdeEntrada
-                    )
+                Text(
+                    text = "R$ ${String.format("%.2f", dividas.sumOf { it.valorPago })}",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = VerdeEntrada
+                )
                 }
             }
         }
@@ -79,13 +82,17 @@ fun DividasScreen() {
             contentPadding = PaddingValues(bottom = 16.dp)
         ) {
             items(dividas) { divida ->
-                CardDivida(divida)
+                CardDivida(
+                    divida = divida,
+                    onPagarParcela = { id, valor -> viewModel.pagarParcela(context, id, valor) },
+                    onQuitarDivida = { id -> viewModel.quitarDivida(context, id) }
+                )
             }
 
             item {
                 Spacer(modifier = Modifier.height(16.dp))
                 OutlinedButton(
-                    onClick = { /* Ação futura */ },
+                    onClick = { /* TODO: Implementar adicionar dívida */ },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)
@@ -102,7 +109,7 @@ fun DividasScreen() {
 }
 
 @Composable
-fun CardDivida(divida: DividaMock) {
+fun CardDivida(divida: Divida, onPagarParcela: (String, Double) -> Unit, onQuitarDivida: (String) -> Unit) {
     val progresso = (divida.valorPago / divida.valorTotal).toFloat()
 
     Card(
@@ -146,6 +153,26 @@ fun CardDivida(divida: DividaMock) {
                     text = "${(progresso * 100).toInt()}%",
                     style = MaterialTheme.typography.labelSmall
                 )
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Button(
+                    onClick = { /* TODO: Implementar modal para pagar parcela */ onPagarParcela(divida.id, 0.0) },
+                    enabled = divida.valorPago < divida.valorTotal,
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
+                ) {
+                    Text("Pagar Parcela")
+                }
+                Button(
+                    onClick = { onQuitarDivida(divida.id) },
+                    enabled = divida.valorPago < divida.valorTotal,
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary)
+                ) {
+                    Text("Quitar")
+                }
             }
         }
     }

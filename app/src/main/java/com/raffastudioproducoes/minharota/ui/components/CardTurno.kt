@@ -16,7 +16,8 @@ fun CardTurno(
     horasTrabalhadas: String,
     ganhoBruto: Double,
     custoRua: Double,
-    ganhoLiquido: Double
+    ganhoLiquido: Double,
+    valorPorHora: Double = 0.0
 ) {
     Card(
         modifier = Modifier
@@ -70,6 +71,14 @@ fun CardTurno(
                     label = "Custos",
                     valor = "R$ ${String.format("%.2f", custoRua)}",
                     cor = Color(0xFFE57373) // Vermelho para custos
+                )
+
+                VerticalDivider(modifier = Modifier.height(40.dp))
+
+                ResumoItem(
+                    label = "R$ / Hora",
+                    valor = "R$ ${String.format("%.2f", valorPorHora)}",
+                    cor = MaterialTheme.colorScheme.primary
                 )
             }
         }

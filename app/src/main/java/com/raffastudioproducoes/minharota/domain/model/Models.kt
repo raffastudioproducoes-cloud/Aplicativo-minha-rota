@@ -11,6 +11,9 @@ data class Turno(
     val data: String,
     val horaInicio: String,
     val horaFim: String,
+    val houvePausa: Boolean = false,
+    val horaInicioPausa: String = "",
+    val horaFimPausa: String = "",
     val ganhoBruto: Double,
     val custoRua: Double,
     val ganhoLiquido: Double,
@@ -47,3 +50,26 @@ data class ContaFixa(
     val dataVencimento: String,
     val paga: Boolean = false
 )
+
+@Serializable
+data class Divida(
+    val id: String,
+    val credor: String,
+    val valorTotal: Double,
+    val valorPago: Double = 0.0
+)
+
+@Serializable
+data class Veiculo(
+    val id: String = "veiculo_unico", // Simplificando para um único veículo por enquanto
+    val quilometragemAtual: Double,
+    val manutencoes: List<Manutencao> = emptyList()
+) {
+    @Serializable
+    data class Manutencao(
+        val tipo: String,
+        val kmUltimoServico: Double,
+        val intervaloKm: Double = 0.0, // Intervalo padrão para o próximo serviço
+        val proximoServicoKm: Double // KM total para o próximo serviço (kmUltimoServico + intervaloKm)
+    )
+}

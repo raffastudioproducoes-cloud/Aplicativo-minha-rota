@@ -2,7 +2,12 @@ package com.raffastudioproducoes.minharota.data.local
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.raffastudioproducoes.minharota.domain.model.*
+import com.raffastudioproducoes.minharota.domain.model.Caixinha
+import com.raffastudioproducoes.minharota.domain.model.ContaFixa
+import com.raffastudioproducoes.minharota.domain.model.Movimentacao
+import com.raffastudioproducoes.minharota.domain.model.Turno
+import com.raffastudioproducoes.minharota.domain.model.Divida
+import com.raffastudioproducoes.minharota.domain.model.Veiculo
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.util.UUID
@@ -98,10 +103,50 @@ class SharedPreferencesManager(context: Context) {
         }
     }
 
+    // --- Dívidas ---
+    fun salvarDividas(lista: List<Divida>) {
+        val jsonString = json.encodeToString(lista)
+        sharedPreferences.edit().putString(KEY_DIVIDAS, jsonString).apply()
+    }
+
+    fun obterDividas(): List<Divida> {
+        val jsonString = sharedPreferences.getString(KEY_DIVIDAS, null)
+        return if (jsonString != null) {
+            try {
+                json.decodeFromString(jsonString)
+            } catch (e: Exception) {
+                emptyList()
+            }
+        } else {
+            emptyList()
+        }
+    }
+
+    // --- Veículo ---
+    fun salvarVeiculo(veiculo: Veiculo) {
+        val jsonString = json.encodeToString(veiculo)
+        sharedPreferences.edit().putString(KEY_VEICULO, jsonString).apply()
+    }
+
+    fun obterVeiculo(): Veiculo? {
+        val jsonString = sharedPreferences.getString(KEY_VEICULO, null)
+        return if (jsonString != null) {
+            try {
+                json.decodeFromString(jsonString)
+            } catch (e: Exception) {
+                null
+            }
+        } else {
+            null
+        }
+    }
+
     companion object {
         private const val KEY_CAIXINHAS = "caixinhas"
         private const val KEY_TURNOS = "turnos"
         private const val KEY_MOVIMENTACOES = "movimentacoes"
         private const val KEY_CONTAS = "contas_fixas"
+        private const val KEY_DIVIDAS = "dividas"
+        private const val KEY_VEICULO = "veiculo"
     }
 }

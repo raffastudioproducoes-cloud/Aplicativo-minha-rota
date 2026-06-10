@@ -1,8 +1,16 @@
 package com.raffastudioproducoes.minharota.ui.components
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.rememberDrawerState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.navigation.NavHostController
 import com.raffastudioproducoes.minharota.ui.screens.hoje.HojeViewModel
 import kotlinx.coroutines.launch
@@ -29,6 +37,9 @@ fun ScaffoldPrincipal(
         }
     ) {
         Scaffold(
+            topBar = {
+                HeaderSuperior(onDrawerClick = { scope.launch { drawerState.open() } })
+            },
             bottomBar = {
                 CustomBottomNavBar(
                     navController = navController,
