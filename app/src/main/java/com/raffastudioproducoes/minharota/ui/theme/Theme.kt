@@ -13,14 +13,17 @@ import androidx.core.view.WindowCompat
 private val DarkColorScheme = darkColorScheme(
     primary = RoxoPrimary,
     secondary = VerdeEntrada,
-    tertiary = VerdeEntrada,
+    tertiary = ElectricBlue,
     background = FundoDark,
     surface = SurfaceDark,
     onPrimary = TextoPrimary,
     onSecondary = FundoDark,
-    onTertiary = FundoDark,
+    onTertiary = TextoPrimary,
     onBackground = TextoPrimary,
     onSurface = TextoPrimary,
+    primaryContainer = TealAccent,
+    secondaryContainer = VerdeEntrada.copy(alpha = 0.2f),
+    tertiaryContainer = ElectricBlue.copy(alpha = 0.2f),
 )
 
 @Composable

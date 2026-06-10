@@ -46,7 +46,7 @@ fun ScaffoldPrincipal(
             },
             bottomBar = {
                 if (!isRidingMode) {
-                    CustomBottomNavBar(
+                    CustomBottomNavBarGlow(
                         navController = navController,
                         onFabClick = { mostrarModalRapido = true }
                     )

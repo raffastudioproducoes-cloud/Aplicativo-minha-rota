@@ -12,7 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
-import com.raffastudioproducoes.minharota.ui.components.ScaffoldPrincipal
+import com.raffastudioproducoes.minharota.ui.components.ScaffoldPrincipalPush
 import com.raffastudioproducoes.minharota.ui.screens.hoje.HojeViewModel
 import com.raffastudioproducoes.minharota.ui.navigation.Rota
 import com.raffastudioproducoes.minharota.ui.screens.hoje.HojeScreen
@@ -30,7 +30,7 @@ fun MainAppContent() {
     val navController = rememberNavController()
     val hojeViewModel: HojeViewModel = viewModel()
 
-    ScaffoldPrincipal(
+    ScaffoldPrincipalPush(
         navController = navController,
         hojeViewModel = hojeViewModel
     ) { paddingValues ->
