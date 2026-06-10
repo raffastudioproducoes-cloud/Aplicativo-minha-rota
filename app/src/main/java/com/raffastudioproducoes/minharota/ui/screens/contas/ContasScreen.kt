@@ -9,30 +9,20 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.raffastudioproducoes.minharota.ui.components.CardConta
-import com.raffastudioproducoes.minharota.ui.theme.VerdeEntrada
-
-data class ContaMock(
-    val id: Int,
-    val nome: String,
-    val data: String,
-    val valor: Double,
-    val pago: Boolean
-)
 
 @Composable
-fun ContasScreen() {
-    var contas by remember {
-        mutableStateOf(
-            listOf(
-                ContaMock(1, "Aluguel da Moto", "10/06", 450.0, false),
-                ContaMock(2, "Plano de Dados", "15/06", 50.0, false),
-                ContaMock(3, "Seguro", "05/06", 120.0, true)
-            )
-        )
+fun ContasScreen(viewModel: ContasViewModel = viewModel()) {
+    val context = LocalContext.current
+    val contas by viewModel.contas.collectAsState()
+    val metaDiaria by viewModel.metaDiariaAutomatica.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.carregarContas(context)
     }
 
     Column(modifier = Modifier.fillMaxSize()) {
@@ -56,13 +46,13 @@ fun ContasScreen() {
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "R$ 85,00",
+                    text = "R$ ${String.format("%.2f", metaDiaria)}",
                     style = MaterialTheme.typography.headlineLarge,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
                 Text(
-                    text = "Baseado em suas contas fixas",
+                    text = "Baseado em suas contas fixas pendentes",
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.6f)
                 )
@@ -83,21 +73,19 @@ fun ContasScreen() {
             items(contas) { conta ->
                 CardConta(
                     nome = conta.nome,
-                    dataVencimento = conta.data,
+                    dataVencimento = conta.dataVencimento,
                     valor = conta.valor,
-                    pago = conta.pago,
-                    onTogglePago = {
-                        contas = contas.map {
-                            if (it.id == conta.id) it.copy(pago = !it.pago) else it
-                        }
-                    }
+                    pago = conta.paga,
+                    onTogglePago = { viewModel.pagarConta(context, conta.id) }
                 )
             }
 
             item {
                 Spacer(modifier = Modifier.height(16.dp))
                 OutlinedButton(
-                    onClick = { /* Ação futura */ },
+                    onClick = { 
+                        viewModel.adicionarConta(context, "Nova Conta", 100.0, "20/06")
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)

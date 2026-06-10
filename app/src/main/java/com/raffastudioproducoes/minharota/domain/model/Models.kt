@@ -38,3 +38,12 @@ data class Movimentacao(
     val valor: Double,
     val data: String
 )
+
+@Serializable
+data class ContaFixa(
+    val id: String,
+    val nome: String,
+    val valor: Double,
+    val dataVencimento: String,
+    val paga: Boolean = false
+)

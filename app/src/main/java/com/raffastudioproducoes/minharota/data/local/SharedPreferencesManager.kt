@@ -2,11 +2,10 @@ package com.raffastudioproducoes.minharota.data.local
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.raffastudioproducoes.minharota.domain.model.Caixinha
-import com.raffastudioproducoes.minharota.domain.model.Movimentacao
-import com.raffastudioproducoes.minharota.domain.model.Turno
+import com.raffastudioproducoes.minharota.domain.model.*
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import java.util.UUID
 
 class SharedPreferencesManager(context: Context) {
     private val sharedPreferences: SharedPreferences =
@@ -32,7 +31,13 @@ class SharedPreferencesManager(context: Context) {
                 emptyList()
             }
         } else {
-            emptyList()
+            val padrao = listOf(
+                Caixinha(UUID.randomUUID().toString(), "Base de Tudo", "Custos essenciais", "🏠", "#820AD1", 40.0),
+                Caixinha(UUID.randomUUID().toString(), "Manutenção", "Reserva para a moto", "🏍️", "#2ECC71", 30.0),
+                Caixinha(UUID.randomUUID().toString(), "Lazer", "Diversão e descanso", "🎉", "#FFD700", 30.0)
+            )
+            salvarCaixinhas(padrao)
+            padrao
         }
     }
 
@@ -44,6 +49,25 @@ class SharedPreferencesManager(context: Context) {
 
     fun obterTurnos(): List<Turno> {
         val jsonString = sharedPreferences.getString(KEY_TURNOS, null)
+        return if (jsonString != null) {
+            try {
+                json.decodeFromString(jsonString)
+            } catch (e: Exception) {
+                emptyList()
+            }
+        } else {
+            emptyList()
+        }
+    }
+
+    // --- Contas Fixas ---
+    fun salvarContas(lista: List<ContaFixa>) {
+        val jsonString = json.encodeToString(lista)
+        sharedPreferences.edit().putString(KEY_CONTAS, jsonString).apply()
+    }
+
+    fun obterContas(): List<ContaFixa> {
+        val jsonString = sharedPreferences.getString(KEY_CONTAS, null)
         return if (jsonString != null) {
             try {
                 json.decodeFromString(jsonString)
@@ -78,5 +102,6 @@ class SharedPreferencesManager(context: Context) {
         private const val KEY_CAIXINHAS = "caixinhas"
         private const val KEY_TURNOS = "turnos"
         private const val KEY_MOVIMENTACOES = "movimentacoes"
+        private const val KEY_CONTAS = "contas_fixas"
     }
 }

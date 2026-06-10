@@ -41,7 +41,9 @@ fun MainAppContent() {
         ) {
             composable(Rota.Hoje.route) { HojeScreen(viewModel = hojeViewModel) }
             composable(Rota.Contas.route) { ContasScreen() }
-            composable(Rota.Caixas.route) { CaixasScreen() }
+            composable(Rota.Caixas.route) { 
+                CaixasScreen(hojeViewModel = hojeViewModel) 
+            }
             composable(Rota.Graficos.route) { GraficosScreen() }
             composable(Rota.Garagem.route) { GaragemScreen() }
             composable(Rota.Extrato.route) { ExtratoScreen() }
