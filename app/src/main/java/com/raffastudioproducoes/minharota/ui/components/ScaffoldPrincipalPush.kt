@@ -47,7 +47,7 @@ fun ScaffoldPrincipalPush(
                 .offset(x = -(280.dp - drawerOffsetPx))
                 .background(FundoDark)
         ) {
-            DrawerConteudo(
+            DrawerConteudoGradient(
                 navController = navController,
                 onClose = {
                     scope.launch { drawerState.close() }
@@ -67,7 +67,7 @@ fun ScaffoldPrincipalPush(
                 },
                 bottomBar = {
                     if (!isRidingMode) {
-                        CustomBottomNavBarGlow(
+                        BottomNavBarSquircle(
                             navController = navController,
                             onFabClick = { mostrarModalRapido = true }
                         )
