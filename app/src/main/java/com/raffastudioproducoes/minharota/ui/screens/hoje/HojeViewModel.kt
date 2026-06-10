@@ -3,6 +3,7 @@ package com.raffastudioproducoes.minharota.ui.screens.hoje
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import com.raffastudioproducoes.minharota.data.local.SharedPreferencesManager
+import com.raffastudioproducoes.minharota.domain.model.Corrida
 import com.raffastudioproducoes.minharota.domain.model.Turno
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,6 +27,8 @@ class HojeViewModel : ViewModel() {
     private val _horaFim = MutableStateFlow("--:--")
     val horaFim: StateFlow<String> = _horaFim.asStateFlow()
 
+    private val _corridasAtuais = MutableStateFlow<List<Corrida>>(emptyList())
+
     fun updateGanhoBruto(valor: Double) {
         _ganhoBruto.value = valor
         calcularLiquido()
@@ -42,6 +45,12 @@ class HojeViewModel : ViewModel() {
 
     fun adicionarGanhoRapido(valor: Double) {
         _ganhoBruto.value += valor
+        val novaCorrida = Corrida(
+            id = UUID.randomUUID().toString(),
+            valor = valor,
+            timestamp = System.currentTimeMillis()
+        )
+        _corridasAtuais.value = _corridasAtuais.value + novaCorrida
         calcularLiquido()
     }
 
@@ -56,7 +65,8 @@ class HojeViewModel : ViewModel() {
             horaFim = _horaFim.value,
             ganhoBruto = _ganhoBruto.value,
             custoRua = _custoRua.value,
-            ganhoLiquido = _ganhoLiquido.value
+            ganhoLiquido = _ganhoLiquido.value,
+            corridas = _corridasAtuais.value
         )
 
         val turnosAtuais = prefs.obterTurnos().toMutableList()
@@ -73,5 +83,6 @@ class HojeViewModel : ViewModel() {
         _ganhoLiquido.value = 0.0
         _horaInicio.value = "--:--"
         _horaFim.value = "--:--"
+        _corridasAtuais.value = emptyList()
     }
 }

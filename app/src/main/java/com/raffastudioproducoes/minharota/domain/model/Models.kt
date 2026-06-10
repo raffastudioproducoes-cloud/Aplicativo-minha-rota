@@ -3,6 +3,9 @@ package com.raffastudioproducoes.minharota.domain.model
 import kotlinx.serialization.Serializable
 
 @Serializable
+data class Corrida(val id: String, val valor: Double, val timestamp: Long)
+
+@Serializable
 data class Turno(
     val id: String,
     val data: String,
@@ -10,7 +13,8 @@ data class Turno(
     val horaFim: String,
     val ganhoBruto: Double,
     val custoRua: Double,
-    val ganhoLiquido: Double
+    val ganhoLiquido: Double,
+    val corridas: List<Corrida> = emptyList()
 )
 
 @Serializable
