@@ -131,7 +131,7 @@ fun DrawerConteudoGradient(navController: NavController, onClose: () -> Unit) {
                     "Extrato" -> Rota.Extrato.route
                     "Dívidas" -> Rota.Dividas.route
                     "Garagem" -> Rota.Garagem.route
-                    "Configurações" -> Rota.Config.route
+                    "Configurações" -> Rota.Configuracoes.route
                     else -> Rota.Hoje.route
                 }
                 navController.navigate(route) {
