@@ -1,5 +1,6 @@
 package com.raffastudioproducoes.minharota.ui.screens.hoje
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -8,19 +9,37 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.raffastudioproducoes.minharota.ui.components.CardTurno
 
 @Composable
-fun HojeScreen() {
-    var ganhoBrutoInput by remember { mutableStateOf("") }
-    var custoRuaInput by remember { mutableStateOf("") }
+fun HojeScreen(viewModel: HojeViewModel = viewModel()) {
+    val context = LocalContext.current
     
-    val ganhoBruto = ganhoBrutoInput.toDoubleOrNull() ?: 0.0
-    val custoRua = custoRuaInput.toDoubleOrNull() ?: 0.0
-    val ganhoLiquido = ganhoBruto - custoRua
+    val ganhoBruto by viewModel.ganhoBruto.collectAsState()
+    val custoRua by viewModel.custoRua.collectAsState()
+    val ganhoLiquido by viewModel.ganhoLiquido.collectAsState()
+    
+    // Estados locais para o texto do input (evita bugs de digitação com double)
+    var ganhoBrutoText by remember { mutableStateOf(if (ganhoBruto == 0.0) "" else ganhoBruto.toString()) }
+    var custoRuaText by remember { mutableStateOf(if (custoRua == 0.0) "" else custoRua.toString()) }
+
+    // Sincroniza texto se o valor do ViewModel mudar externamente (ex: Ganho Rápido)
+    LaunchedEffect(ganhoBruto) {
+        if (ganhoBruto.toString() != ganhoBrutoText) {
+            ganhoBrutoText = if (ganhoBruto == 0.0) "" else ganhoBruto.toString()
+        }
+    }
+    
+    LaunchedEffect(custoRua) {
+        if (custoRua.toString() != custoRuaText) {
+            custoRuaText = if (custoRua == 0.0) "" else custoRua.toString()
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -29,7 +48,6 @@ fun HojeScreen() {
             .padding(bottom = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Card de Resumo no Topo
         CardTurno(
             horasTrabalhadas = "00:00",
             ganhoBruto = ganhoBruto,
@@ -39,7 +57,6 @@ fun HojeScreen() {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Seção de Inputs
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -53,8 +70,11 @@ fun HojeScreen() {
             )
 
             OutlinedTextField(
-                value = ganhoBrutoInput,
-                onValueChange = { ganhoBrutoInput = it },
+                value = ganhoBrutoText,
+                onValueChange = { 
+                    ganhoBrutoText = it
+                    viewModel.updateGanhoBruto(it.toDoubleOrNull() ?: 0.0)
+                },
                 label = { Text("Ganho Bruto (R$)") },
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
@@ -62,8 +82,11 @@ fun HojeScreen() {
             )
 
             OutlinedTextField(
-                value = custoRuaInput,
-                onValueChange = { custoRuaInput = it },
+                value = custoRuaText,
+                onValueChange = { 
+                    custoRuaText = it
+                    viewModel.updateCustoRua(it.toDoubleOrNull() ?: 0.0)
+                },
                 label = { Text("Custo de Rua (R$)") },
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
@@ -73,7 +96,13 @@ fun HojeScreen() {
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(
-                onClick = { /* Ação futura de salvar */ },
+                onClick = { 
+                    viewModel.salvarTurno(context) {
+                        Toast.makeText(context, "Turno salvo com sucesso! ✅", Toast.LENGTH_SHORT).show()
+                        ganhoBrutoText = ""
+                        custoRuaText = ""
+                    }
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),

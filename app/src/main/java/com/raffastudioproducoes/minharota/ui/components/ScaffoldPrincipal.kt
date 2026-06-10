@@ -4,11 +4,13 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.navigation.NavHostController
+import com.raffastudioproducoes.minharota.ui.screens.hoje.HojeViewModel
 import kotlinx.coroutines.launch
 
 @Composable
 fun ScaffoldPrincipal(
     navController: NavHostController,
+    hojeViewModel: HojeViewModel,
     content: @Composable (PaddingValues) -> Unit
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -41,7 +43,7 @@ fun ScaffoldPrincipal(
             ModalRegistroRapido(
                 onDismiss = { mostrarModalRapido = false },
                 onSave = { valor ->
-                    // Ação de salvar futura
+                    hojeViewModel.adicionarGanhoRapido(valor)
                     mostrarModalRapido = false
                 }
             )

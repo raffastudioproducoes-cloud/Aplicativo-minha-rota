@@ -10,8 +10,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.raffastudioproducoes.minharota.ui.components.ScaffoldPrincipal
+import com.raffastudioproducoes.minharota.ui.screens.hoje.HojeViewModel
 import com.raffastudioproducoes.minharota.ui.navigation.Rota
 import com.raffastudioproducoes.minharota.ui.screens.hoje.HojeScreen
 import com.raffastudioproducoes.minharota.ui.screens.caixas.CaixasScreen
@@ -26,14 +28,18 @@ import com.raffastudioproducoes.minharota.ui.screens.config.ConfigScreen
 @Composable
 fun MainAppContent() {
     val navController = rememberNavController()
+    val hojeViewModel: HojeViewModel = viewModel()
 
-    ScaffoldPrincipal(navController = navController) { paddingValues ->
+    ScaffoldPrincipal(
+        navController = navController,
+        hojeViewModel = hojeViewModel
+    ) { paddingValues ->
         NavHost(
             navController = navController,
             startDestination = Rota.Hoje.route,
             modifier = Modifier.padding(paddingValues)
         ) {
-            composable(Rota.Hoje.route) { HojeScreen() }
+            composable(Rota.Hoje.route) { HojeScreen(viewModel = hojeViewModel) }
             composable(Rota.Contas.route) { ContasScreen() }
             composable(Rota.Caixas.route) { CaixasScreen() }
             composable(Rota.Graficos.route) { GraficosScreen() }
