@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Build
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -116,7 +118,12 @@ fun GaragemScreen(viewModel: GaragemViewModel = viewModel()) {
                             modifier = Modifier.padding(16.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text(text = "🔧", style = MaterialTheme.typography.headlineSmall) // TODO: Adicionar emoji dinâmico
+                            Icon(
+                                imageVector = Icons.Rounded.Build,
+                                contentDescription = null,
+                                modifier = Modifier.size(24.dp),
+                                tint = textColor
+                            )
                             Spacer(modifier = Modifier.width(16.dp))
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(text = manutencao.tipo, fontWeight = FontWeight.Bold)
