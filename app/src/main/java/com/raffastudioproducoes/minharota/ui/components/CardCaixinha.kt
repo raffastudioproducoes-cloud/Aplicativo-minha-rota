@@ -18,7 +18,9 @@ fun CardCaixinha(
     titulo: String,
     valorGuardado: Double,
     metaValor: Double,
-    corDestaque: Color
+    corDestaque: Color,
+    percentual: Float = 0f,
+    onDepositoClick: (() -> Unit)? = null
 ) {
     val progresso = if (metaValor > 0) (valorGuardado / metaValor).toFloat().coerceIn(0f, 1f) else 0f
 

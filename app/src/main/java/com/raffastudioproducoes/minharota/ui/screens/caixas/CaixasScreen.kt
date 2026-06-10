@@ -60,14 +60,23 @@ fun CaixasScreen(
                     valorGuardado = caixinha.saldoAtual,
                     metaValor = caixinha.metaValor,
                     corDestaque = Color(android.graphics.Color.parseColor(caixinha.cor)),
-                    percentual = (caixinha.saldoAtual / if (caixinha.metaValor > 0) caixinha.metaValor else 1.0).toFloat()
+                    percentual = caixinha.percentual.toFloat() / 100f,
+                    onDepositoClick = {
+                        if (valorParaDepositar > 0) {
+                            viewModel.confirmarDeposito(context, caixinha.id, valorParaDepositar)
+                        }
+                    }
                 )
                 
                 if (valorParaDepositar > 0) {
                     Button(
                         onClick = { viewModel.confirmarDeposito(context, caixinha.id, valorParaDepositar) },
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp).fillMaxWidth(),
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(android.graphics.Color.parseColor(caixinha.cor)))
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp, vertical = 4.dp)
+                            .fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(android.graphics.Color.parseColor(caixinha.cor))
+                        )
                     ) {
                         Text("Depositar R$ ${String.format("%.2f", valorParaDepositar)}")
                     }
