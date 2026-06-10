@@ -12,10 +12,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.raffastudioproducoes.minharota.ui.components.CardTurno
 import com.raffastudioproducoes.minharota.ui.components.TimeInput
+import com.raffastudioproducoes.minharota.ui.theme.VerdeEntrada
 
 @Composable
 fun HojeScreen(viewModel: HojeViewModel = viewModel()) {
@@ -31,6 +34,7 @@ fun HojeScreen(viewModel: HojeViewModel = viewModel()) {
     val houvePausa by viewModel.houvePausa.collectAsState()
     val horaInicioPausa by viewModel.horaInicioPausa.collectAsState()
     val horaFimPausa by viewModel.horaFimPausa.collectAsState()
+    val isRidingMode by viewModel.isRidingMode.collectAsState()
     
     // Estados locais para o texto do input (evita bugs de digitação com double)
     var ganhoBrutoText by remember { mutableStateOf(if (ganhoBruto == 0.0) "" else ganhoBruto.toString()) }
@@ -49,13 +53,41 @@ fun HojeScreen(viewModel: HojeViewModel = viewModel()) {
         }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(bottom = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+    if (isRidingMode) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color(0xFF0F172A)),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(
+                    text = "R$ ${String.format("%.2f", ganhoLiquido)}",
+                    fontSize = 72.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFF10B981)
+                )
+                Spacer(modifier = Modifier.height(32.dp))
+                Button(
+                    onClick = { viewModel.adicionarGanhoRapido(5.0) /* TODO: Implementar modal para valor */ },
+                    modifier = Modifier
+                        .fillMaxWidth(0.9f)
+                        .height(64.dp),
+                    shape = MaterialTheme.shapes.medium,
+                    colors = ButtonDefaults.buttonColors(containerColor = VerdeEntrada)
+                ) {
+                    Text("Ganho Rápido", fontSize = 24.sp, fontWeight = FontWeight.Bold)
+                }
+            }
+        }
+    } else {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(bottom = 16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             CardTurno(
                 horasTrabalhadas = horasTrabalhadas,
                 ganhoBruto = ganhoBruto,
@@ -158,6 +190,23 @@ fun HojeScreen(viewModel: HojeViewModel = viewModel()) {
             ) {
                 Text(
                     text = "Salvar Dia",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            Button(
+                onClick = { viewModel.toggleRidingMode() },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+                shape = MaterialTheme.shapes.medium,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.secondary
+                )
+            ) {
+                Text(
+                    text = "Alternar Modo Riding",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold
                 )

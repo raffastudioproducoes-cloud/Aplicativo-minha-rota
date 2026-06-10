@@ -14,6 +14,7 @@ import androidx.compose.runtime.setValue
 import androidx.navigation.NavHostController
 import com.raffastudioproducoes.minharota.ui.screens.hoje.HojeViewModel
 import kotlinx.coroutines.launch
+import androidx.compose.runtime.collectAsState
 
 @Composable
 fun ScaffoldPrincipal(
@@ -24,6 +25,7 @@ fun ScaffoldPrincipal(
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     var mostrarModalRapido by remember { mutableStateOf(false) }
+    val isRidingMode by hojeViewModel.isRidingMode.collectAsState()
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -38,13 +40,17 @@ fun ScaffoldPrincipal(
     ) {
         Scaffold(
             topBar = {
-                HeaderSuperior(onDrawerClick = { scope.launch { drawerState.open() } })
+                if (!isRidingMode) {
+                    HeaderSuperior(onDrawerClick = { scope.launch { drawerState.open() } })
+                }
             },
             bottomBar = {
-                CustomBottomNavBar(
-                    navController = navController,
-                    onFabClick = { mostrarModalRapido = true }
-                )
+                if (!isRidingMode) {
+                    CustomBottomNavBar(
+                        navController = navController,
+                        onFabClick = { mostrarModalRapido = true }
+                    )
+                }
             }
         ) { paddingValues ->
             content(paddingValues)

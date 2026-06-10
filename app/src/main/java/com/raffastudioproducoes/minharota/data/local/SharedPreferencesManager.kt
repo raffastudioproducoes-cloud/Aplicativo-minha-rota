@@ -65,6 +65,10 @@ class SharedPreferencesManager(context: Context) {
         }
     }
 
+    fun obterTodasCorridas(): List<Corrida> {
+        return obterTurnos().flatMap { it.corridas }
+    }
+
     // --- Contas Fixas ---
     fun salvarContas(lista: List<ContaFixa>) {
         val jsonString = json.encodeToString(lista)

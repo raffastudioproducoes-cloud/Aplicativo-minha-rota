@@ -2,16 +2,16 @@ package com.raffastudioproducoes.minharota.ui.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.AccountBalanceWallet
-import androidx.compose.material.icons.filled.BarChart
-import androidx.compose.material.icons.filled.Inventory2
-import androidx.compose.material.icons.filled.MoneyOff
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.ReceiptLong
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.Today
-import androidx.compose.material.icons.outlined.TwoWheeler
+import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.rounded.AccountBalanceWallet
+import androidx.compose.material.icons.rounded.BarChart
+import androidx.compose.material.icons.rounded.Inventory2
+import androidx.compose.material.icons.rounded.MoneyOff
+import androidx.compose.material.icons.rounded.Person
+import androidx.compose.material.icons.rounded.ReceiptLong
+import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material.icons.rounded.Today
+import androidx.compose.material.icons.rounded.TwoWheeler
 import com.raffastudioproducoes.minharota.ui.navigation.itensNavegacao
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -38,7 +38,7 @@ fun DrawerConteudo(navController: NavController, onClose: () -> Unit) {
             horizontalArrangement = Arrangement.End
         ) {
             IconButton(onClick = onClose) {
-                Icon(Icons.Default.Close, contentDescription = "Fechar Menu")
+                Icon(Icons.Rounded.Close, contentDescription = "Fechar Menu")
             }
         }
         
@@ -77,23 +77,23 @@ fun DrawerConteudo(navController: NavController, onClose: () -> Unit) {
             style = MaterialTheme.typography.labelLarge,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
         )
-        DrawerItem(Icons.Default.ReceiptLong, "Extrato") {
+        DrawerItem(Icons.Rounded.ReceiptLong, "Extrato") {
             navController.navigate(Rota.Extrato.route)
             onClose()
         }
-        DrawerItem(Icons.Default.MoneyOff, "Dívidas") {
+        DrawerItem(Icons.Rounded.MoneyOff, "Dívidas") {
             navController.navigate(Rota.Dividas.route)
             onClose()
         }
-        DrawerItem(Icons.Outlined.TwoWheeler, "Garagem") {
+        DrawerItem(Icons.Rounded.TwoWheeler, "Garagem") {
             navController.navigate(Rota.Garagem.route)
             onClose()
         }
-        DrawerItem(Icons.Default.Settings, "Configurações") {
+        DrawerItem(Icons.Rounded.Settings, "Configurações") {
             navController.navigate(Rota.Configuracoes.route)
             onClose()
         }
-        DrawerItem(Icons.Default.Person, "Perfil") {
+        DrawerItem(Icons.Rounded.Person, "Perfil") {
             navController.navigate(Rota.Perfil.route)
             onClose()
         }

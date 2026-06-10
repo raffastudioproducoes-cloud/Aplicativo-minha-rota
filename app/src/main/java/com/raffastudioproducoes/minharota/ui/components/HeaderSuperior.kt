@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Notes
+import androidx.compose.material.icons.rounded.Notes
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -59,7 +59,7 @@ fun HeaderSuperior(onDrawerClick: () -> Unit) {
         },
         navigationIcon = {
             IconButton(onClick = onDrawerClick) {
-                Icon(Icons.Default.Notes, contentDescription = "Abrir Menu")
+                Icon(Icons.Rounded.Notes, contentDescription = "Abrir Menu")
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(

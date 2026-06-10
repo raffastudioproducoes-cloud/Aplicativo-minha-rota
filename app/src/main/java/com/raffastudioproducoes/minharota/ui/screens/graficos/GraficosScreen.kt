@@ -136,8 +136,8 @@ fun HeatmapTable(data: Array<DoubleArray>) {
                 }
             }
 
-            // Horas e Células (Apenas horas produtivas para economizar espaço: 06h às 23h)
-            for (hora in 6..23) {
+            // Horas e Células (00h às 23h)
+            for (hora in 0..23) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = "${hora}h",

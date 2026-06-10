@@ -23,7 +23,7 @@ class GraficosViewModel : ViewModel() {
 
     fun carregarDados(context: Context) {
         val prefs = SharedPreferencesManager(context)
-        val turnos = prefs.obterTurnos()
+        val corridas = prefs.obterTodasCorridas()
         val novaMatriz = Array(7) { DoubleArray(24) { 0.0 } }
         
         var maxGanhoDia = 0.0
@@ -33,8 +33,7 @@ class GraficosViewModel : ViewModel() {
 
         val ganhosPorDia = DoubleArray(7) { 0.0 }
 
-        turnos.forEach { turno ->
-            turno.corridas.forEach { corrida ->
+        corridas.forEach { corrida ->
                 val cal = Calendar.getInstance()
                 cal.timeInMillis = corrida.timestamp
                 val dia = cal.get(Calendar.DAY_OF_WEEK) - 1 // 0-indexed (Dom=0)

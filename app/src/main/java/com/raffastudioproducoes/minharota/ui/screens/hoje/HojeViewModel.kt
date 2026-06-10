@@ -30,6 +30,9 @@ class HojeViewModel : ViewModel() {
     private val _horasTrabalhadas = MutableStateFlow("00:00")
     val horasTrabalhadas: StateFlow<String> = _horasTrabalhadas.asStateFlow()
 
+    private val _isRidingMode = MutableStateFlow(false)
+    val isRidingMode: StateFlow<Boolean> = _isRidingMode.asStateFlow()
+
     private val _horaInicio = MutableStateFlow("")
     val horaInicio: StateFlow<String> = _horaInicio.asStateFlow()
 
@@ -56,6 +59,10 @@ class HojeViewModel : ViewModel() {
     fun updateCustoRua(valor: Double) {
         _custoRua.value = valor
         calcularLiquido()
+    }
+
+    fun toggleRidingMode() {
+        _isRidingMode.value = !_isRidingMode.value
     }
 
     private fun calcularLiquido() {

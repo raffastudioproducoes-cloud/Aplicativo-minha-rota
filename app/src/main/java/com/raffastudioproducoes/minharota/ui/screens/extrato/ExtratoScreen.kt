@@ -5,8 +5,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDownward
-import androidx.compose.material.icons.filled.ArrowUpward
+import androidx.compose.material.icons.rounded.ArrowDownward
+import androidx.compose.material.icons.rounded.ArrowUpward
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -102,7 +102,7 @@ fun CardMovimentacao(mov: Movimentacao) {
             ) {
                 Box(contentAlignment = Alignment.Center) {
                     Icon(
-                        imageVector = if (mov.tipo == "ENTRADA") Icons.Default.ArrowUpward else Icons.Default.ArrowDownward,
+                        imageVector = if (mov.tipo == "ENTRADA") Icons.Rounded.ArrowUpward else Icons.Rounded.ArrowDownward,
                         contentDescription = null,
                         tint = if (mov.tipo == "ENTRADA") VerdeEntrada else Color.Red,
                         modifier = Modifier.size(20.dp)
