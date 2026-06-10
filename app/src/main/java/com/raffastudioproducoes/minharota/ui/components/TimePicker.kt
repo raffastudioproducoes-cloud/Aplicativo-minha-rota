@@ -4,7 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccessTime
+import androidx.compose.material.icons.rounded.AccessTime
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -39,7 +39,7 @@ fun TimeInput(label: String, selectedTime: String, onTimeSelected: (String) -> U
             modifier = Modifier.fillMaxWidth(),
             trailingIcon = {
                 Icon(
-                    Icons.Default.AccessTime,
+                    Icons.Rounded.AccessTime,
                     contentDescription = "Selecionar Hora",
                     modifier = Modifier.clickable { showTimePicker = true }
                 )

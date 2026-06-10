@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -93,7 +93,7 @@ fun CaixasScreen(
                         .height(56.dp),
                     shape = MaterialTheme.shapes.medium
                 ) {
-                    Icon(Icons.Default.Add, contentDescription = null)
+                    Icon(Icons.Rounded.Add, contentDescription = null)
                     Spacer(modifier = Modifier.width(8.dp))
                     Text("Nova Caixinha")
                 }

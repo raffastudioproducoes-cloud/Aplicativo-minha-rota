@@ -34,18 +34,17 @@ class GraficosViewModel : ViewModel() {
         val ganhosPorDia = DoubleArray(7) { 0.0 }
 
         corridas.forEach { corrida ->
-                val cal = Calendar.getInstance()
-                cal.timeInMillis = corrida.timestamp
-                val dia = cal.get(Calendar.DAY_OF_WEEK) - 1 // 0-indexed (Dom=0)
-                val hora = cal.get(Calendar.HOUR_OF_DAY)
+            val cal = Calendar.getInstance()
+            cal.timeInMillis = corrida.timestamp
+            val dia = cal.get(Calendar.DAY_OF_WEEK) - 1 // 0-indexed (Dom=0)
+            val hora = cal.get(Calendar.HOUR_OF_DAY)
 
-                novaMatriz[dia][hora] += corrida.valor
-                ganhosPorDia[dia] += corrida.valor
+            novaMatriz[dia][hora] += corrida.valor
+            ganhosPorDia[dia] += corrida.valor
 
-                if (novaMatriz[dia][hora] > maxGanhoHora) {
-                    maxGanhoHora = novaMatriz[dia][hora]
-                    melhorHoraValor = hora
-                }
+            if (novaMatriz[dia][hora] > maxGanhoHora) {
+                maxGanhoHora = novaMatriz[dia][hora]
+                melhorHoraValor = hora
             }
         }
 

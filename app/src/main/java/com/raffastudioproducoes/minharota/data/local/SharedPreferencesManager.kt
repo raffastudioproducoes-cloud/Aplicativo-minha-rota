@@ -8,6 +8,7 @@ import com.raffastudioproducoes.minharota.domain.model.Movimentacao
 import com.raffastudioproducoes.minharota.domain.model.Turno
 import com.raffastudioproducoes.minharota.domain.model.Divida
 import com.raffastudioproducoes.minharota.domain.model.Veiculo
+import com.raffastudioproducoes.minharota.domain.model.Corrida
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.util.UUID

@@ -2,8 +2,8 @@ package com.raffastudioproducoes.minharota.ui.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.RadioButtonUnchecked
+import androidx.compose.material.icons.rounded.CheckCircle
+import androidx.compose.material.icons.rounded.RadioButtonUnchecked
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -64,7 +64,7 @@ fun CardConta(
 
             IconButton(onClick = onTogglePago) {
                 Icon(
-                    imageVector = if (pago) Icons.Default.CheckCircle else Icons.Default.RadioButtonUnchecked,
+                    imageVector = if (pago) Icons.Rounded.CheckCircle else Icons.Rounded.RadioButtonUnchecked,
                     contentDescription = if (pago) "Paga" else "Pendente",
                     tint = if (pago) Color(0xFF2ECC71) else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
                 )

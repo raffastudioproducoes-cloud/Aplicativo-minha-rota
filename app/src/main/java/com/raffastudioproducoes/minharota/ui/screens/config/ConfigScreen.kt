@@ -2,9 +2,9 @@ package com.raffastudioproducoes.minharota.ui.screens.config
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Backup
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Palette
+import androidx.compose.material.icons.rounded.Backup
+import androidx.compose.material.icons.rounded.Info
+import androidx.compose.material.icons.rounded.Palette
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -27,7 +27,7 @@ fun ConfigScreen() {
         ListItem(
             headlineContent = { Text("Tema Escuro") },
             supportingContent = { Text("Ativar/Desativar modo dark") },
-            leadingContent = { Icon(Icons.Default.Palette, contentDescription = null) },
+            leadingContent = { Icon(Icons.Rounded.Palette, contentDescription = null) },
             trailingContent = {
                 Switch(checked = darkMode, onCheckedChange = { darkMode = it })
             }
@@ -38,7 +38,7 @@ fun ConfigScreen() {
         ListItem(
             headlineContent = { Text("Backup e Restauração") },
             supportingContent = { Text("Sincronizar dados na nuvem") },
-            leadingContent = { Icon(Icons.Default.Backup, contentDescription = null) },
+            leadingContent = { Icon(Icons.Rounded.Backup, contentDescription = null) },
             modifier = Modifier.padding(vertical = 8.dp)
         )
 
@@ -47,7 +47,7 @@ fun ConfigScreen() {
         ListItem(
             headlineContent = { Text("Sobre o Aplicativo") },
             supportingContent = { Text("Versão 1.0.0-fase9") },
-            leadingContent = { Icon(Icons.Default.Info, contentDescription = null) }
+            leadingContent = { Icon(Icons.Rounded.Info, contentDescription = null) }
         )
 
         Spacer(modifier = Modifier.weight(1f))

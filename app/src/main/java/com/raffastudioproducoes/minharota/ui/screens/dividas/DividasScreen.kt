@@ -5,7 +5,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -99,7 +99,7 @@ fun DividasScreen(viewModel: DividasViewModel = viewModel()) {
                         .height(56.dp),
                     shape = MaterialTheme.shapes.medium
                 ) {
-                    Icon(Icons.Default.Add, contentDescription = null)
+                    Icon(Icons.Rounded.Add, contentDescription = null)
                     Spacer(modifier = Modifier.width(8.dp))
                     Text("Adicionar Dívida")
                 }
