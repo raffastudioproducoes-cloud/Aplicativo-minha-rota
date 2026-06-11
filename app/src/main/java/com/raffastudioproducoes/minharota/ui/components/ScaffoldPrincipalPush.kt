@@ -5,6 +5,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.draw.clip
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberDrawerState
@@ -47,7 +49,7 @@ fun ScaffoldPrincipalPush(
                 .offset(x = -(280.dp - drawerOffsetPx))
                 .background(FundoDark)
         ) {
-            DrawerConteudoGradient(
+            DrawerConteudoGradientRainbow(
                 navController = navController,
                 onClose = {
                     scope.launch { drawerState.close() }
@@ -55,9 +57,11 @@ fun ScaffoldPrincipalPush(
             )
         }
 
-        // Conteúdo Principal (Deslocado)
+        // Conteúdo Principal (Deslocado) com Canto Arredondado
         Box(
-            modifier = Modifier.offset(x = drawerOffsetPx)
+            modifier = Modifier
+                .offset(x = drawerOffsetPx)
+                .clip(RoundedCornerShape(topStart = 24.dp, bottomStart = 24.dp))
         ) {
             Scaffold(
                 topBar = {

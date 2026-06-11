@@ -48,6 +48,11 @@ class HojeViewModel : ViewModel() {
     private val _horaFimPausa = MutableStateFlow("")
     val horaFimPausa: StateFlow<String> = _horaFimPausa.asStateFlow()
 
+    data class GanhoRapido(val horario: String, val valor: Double)
+
+    private val _ganhosRapidos = MutableStateFlow<List<GanhoRapido>>(emptyList())
+    val ganhosRapidos: StateFlow<List<GanhoRapido>> = _ganhosRapidos.asStateFlow()
+
     private val _corridasAtuais = MutableStateFlow<List<Corrida>>(emptyList())
 
     fun updateGanhoBruto(valor: Double) {
@@ -145,6 +150,18 @@ class HojeViewModel : ViewModel() {
     fun updateHoraFimPausa(hora: String) {
         _horaFimPausa.value = hora
         calcularHorasTrabalhadas()
+    }
+
+    fun registrarGanhoRapido(valor: Double) {
+        val agora = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
+        val ganho = GanhoRapido(horario = agora, valor = valor)
+        val listaAtual = _ganhosRapidos.value.toMutableList()
+        listaAtual.add(ganho)
+        _ganhosRapidos.value = listaAtual
+        
+        // Atualizar ganho bruto
+        _ganhoBruto.value += valor
+        calcularGanhoLiquido()
     }
 
     private fun calcularHorasTrabalhadas() {

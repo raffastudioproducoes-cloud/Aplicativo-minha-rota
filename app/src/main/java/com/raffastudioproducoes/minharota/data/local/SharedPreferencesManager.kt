@@ -146,7 +146,6 @@ class SharedPreferencesManager(context: Context) {
         }
     }
 
-<<<<<<< HEAD
     // --- Perfil do Usuário ---
     fun salvarNomeUsuario(nome: String) {
         sharedPreferences.edit().putString(KEY_NOME_USUARIO, nome).apply()
@@ -178,23 +177,6 @@ class SharedPreferencesManager(context: Context) {
 
     fun obterFotoPerfilUrl(): String {
         return sharedPreferences.getString(KEY_FOTO_PERFIL, "") ?: ""
-=======
-    // --- Dados do Usuário (Perfil) ---
-    fun salvarString(chave: String, valor: String) {
-        sharedPreferences.edit().putString(chave, valor).apply()
-    }
-
-    fun obterString(chave: String, padrao: String = ""): String {
-        return sharedPreferences.getString(chave, padrao) ?: padrao
-    }
-
-    fun salvarBoolean(chave: String, valor: Boolean) {
-        sharedPreferences.edit().putBoolean(chave, valor).apply()
-    }
-
-    fun obterBoolean(chave: String, padrao: Boolean = false): Boolean {
-        return sharedPreferences.getBoolean(chave, padrao)
->>>>>>> bd6dd227a6a40499a32245072bd8cdc8fb97b699
     }
 
     companion object {

@@ -212,7 +212,44 @@ fun HojeScreen(viewModel: HojeViewModel = viewModel()) {
                     fontWeight = FontWeight.Bold
                 )
             }
+            // Lista de Ganhos Rápidos
+            val ganhosRapidos by viewModel.ganhosRapidos.collectAsState()
+            if (ganhosRapidos.isNotEmpty()) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp, vertical = 16.dp)
+                ) {
+                    Text(
+                        text = "Ganhos Rápidos",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(bottom = 12.dp)
+                    )
+                    
+                    ganhosRapidos.forEach { ganho ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = ganho.horario,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = Color.Gray
+                            )
+                            Text(
+                                text = "R$ %.2f".format(ganho.valor),
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = VerdeEntrada
+                            )
+                        }
+                    }
+                }
+            }
         }
     }
-}
 }
