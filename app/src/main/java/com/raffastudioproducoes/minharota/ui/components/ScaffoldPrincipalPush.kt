@@ -67,7 +67,7 @@ fun ScaffoldPrincipalPush(
                 },
                 bottomBar = {
                     if (!isRidingMode) {
-                        BottomNavBarSquircle(
+                        BottomNavBarNotch(
                             navController = navController,
                             onFabClick = { mostrarModalRapido = true }
                         )

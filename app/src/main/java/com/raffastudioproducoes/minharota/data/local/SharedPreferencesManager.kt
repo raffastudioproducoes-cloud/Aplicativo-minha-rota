@@ -146,6 +146,39 @@ class SharedPreferencesManager(context: Context) {
         }
     }
 
+    // --- Perfil do Usuário ---
+    fun salvarNomeUsuario(nome: String) {
+        sharedPreferences.edit().putString(KEY_NOME_USUARIO, nome).apply()
+    }
+
+    fun obterNomeUsuario(): String {
+        return sharedPreferences.getString(KEY_NOME_USUARIO, "Motorista") ?: "Motorista"
+    }
+
+    fun salvarEmail(email: String) {
+        sharedPreferences.edit().putString(KEY_EMAIL, email).apply()
+    }
+
+    fun obterEmail(): String {
+        return sharedPreferences.getString(KEY_EMAIL, "") ?: ""
+    }
+
+    fun salvarDataAniversario(data: String) {
+        sharedPreferences.edit().putString(KEY_DATA_ANIVERSARIO, data).apply()
+    }
+
+    fun obterDataAniversario(): String {
+        return sharedPreferences.getString(KEY_DATA_ANIVERSARIO, "") ?: ""
+    }
+
+    fun salvarFotoPerfilUrl(url: String) {
+        sharedPreferences.edit().putString(KEY_FOTO_PERFIL, url).apply()
+    }
+
+    fun obterFotoPerfilUrl(): String {
+        return sharedPreferences.getString(KEY_FOTO_PERFIL, "") ?: ""
+    }
+
     companion object {
         private const val KEY_CAIXINHAS = "caixinhas"
         private const val KEY_TURNOS = "turnos"
@@ -153,5 +186,9 @@ class SharedPreferencesManager(context: Context) {
         private const val KEY_CONTAS = "contas_fixas"
         private const val KEY_DIVIDAS = "dividas"
         private const val KEY_VEICULO = "veiculo"
+        private const val KEY_NOME_USUARIO = "nome_usuario"
+        private const val KEY_EMAIL = "email"
+        private const val KEY_DATA_ANIVERSARIO = "data_aniversario"
+        private const val KEY_FOTO_PERFIL = "foto_perfil"
     }
 }

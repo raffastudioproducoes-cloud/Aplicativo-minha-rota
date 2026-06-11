@@ -1,96 +1,174 @@
 package com.raffastudioproducoes.minharota.ui.screens.perfil
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Person
-import androidx.compose.material3.*
+import androidx.compose.material.icons.rounded.AccountCircle
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.raffastudioproducoes.minharota.ui.theme.FundoDark
+import com.raffastudioproducoes.minharota.ui.theme.VerdeEntrada
 
 @Composable
-fun PerfilScreen() {
+fun PerfilScreen(viewModel: PerfilViewModel = PerfilViewModel()) {
+    val context = LocalContext.current
+    val nomeUsuario by viewModel.nomeUsuario.collectAsState()
+    val email by viewModel.email.collectAsState()
+    val dataAniversario by viewModel.dataAniversario.collectAsState()
+
+    var nomeEditavel by remember { mutableStateOf(nomeUsuario) }
+    var emailEditavel by remember { mutableStateOf(email) }
+    var dataEditavel by remember { mutableStateOf(dataAniversario) }
+
+    LaunchedEffect(Unit) {
+        viewModel.carregarDadosPerfil(context)
+    }
+
+    LaunchedEffect(nomeUsuario, email, dataAniversario) {
+        nomeEditavel = nomeUsuario
+        emailEditavel = email
+        dataEditavel = dataAniversario
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(FundoDark)
+            .verticalScroll(rememberScrollState())
             .padding(24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
             text = "Meu Perfil",
-            style = MaterialTheme.typography.headlineSmall,
+            style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
+            color = Color.White,
             modifier = Modifier.align(Alignment.Start)
         )
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
-        // Placeholder Foto de Perfil
+        // Foto de Perfil
         Box(
             modifier = Modifier
                 .size(120.dp)
-                .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.surfaceVariant),
+                .background(color = VerdeEntrada.copy(alpha = 0.2f), shape = CircleShape),
             contentAlignment = Alignment.Center
         ) {
             Icon(
-                imageVector = Icons.Rounded.Person,
-                contentDescription = null,
-                modifier = Modifier.size(64.dp),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                imageVector = Icons.Rounded.AccountCircle,
+                contentDescription = "Foto de Perfil",
+                modifier = Modifier.size(100.dp),
+                tint = VerdeEntrada
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
-        Surface(
-            color = MaterialTheme.colorScheme.secondaryContainer,
-            shape = MaterialTheme.shapes.small
-        ) {
-            Text(
-                text = "Plano Atual: FREE",
-                modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.onSecondaryContainer,
-                fontWeight = FontWeight.Bold
-            )
-        }
-
-        Spacer(modifier = Modifier.height(32.dp))
-
+        // Campo de Nome
         OutlinedTextField(
-            value = "Motorista Parceiro",
-            onValueChange = {},
+            value = nomeEditavel,
+            onValueChange = { nomeEditavel = it },
             label = { Text("Nome") },
             modifier = Modifier.fillMaxWidth(),
-            readOnly = true
+            shape = RoundedCornerShape(12.dp),
+            singleLine = true
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
-
+        // Campo de Email
         OutlinedTextField(
-            value = "motorista@exemplo.com",
-            onValueChange = {},
-            label = { Text("E-mail") },
+            value = emailEditavel,
+            onValueChange = { emailEditavel = it },
+            label = { Text("Email") },
             modifier = Modifier.fillMaxWidth(),
-            readOnly = true
+            shape = RoundedCornerShape(12.dp),
+            singleLine = true
         )
 
-        Spacer(modifier = Modifier.weight(1f))
-
-        Button(
-            onClick = { /* Logout futuro */ },
+        // Campo de Data de Aniversário
+        OutlinedTextField(
+            value = dataEditavel,
+            onValueChange = { dataEditavel = it },
+            label = { Text("Data de Aniversário (DD/MM/YYYY)") },
             modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE57373))
+            shape = RoundedCornerShape(12.dp),
+            singleLine = true
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // Botão Salvar
+        Button(
+            onClick = {
+                viewModel.atualizarNomeUsuario(nomeEditavel, context)
+                viewModel.atualizarEmail(emailEditavel, context)
+                viewModel.atualizarDataAniversario(dataEditavel, context)
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp),
+            shape = RoundedCornerShape(12.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = VerdeEntrada
+            )
         ) {
-            Text("Sair da Conta", color = Color.White)
+            Text(
+                text = "Salvar Alterações",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black
+            )
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // Botão Planos (Premium)
+        Button(
+            onClick = { /* TODO: Navegar para tela de Planos */ },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp),
+            shape = RoundedCornerShape(12.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary
+            )
+        ) {
+            Text(
+                text = "Ver Planos Premium",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = Color.White
+            )
         }
     }
 }
