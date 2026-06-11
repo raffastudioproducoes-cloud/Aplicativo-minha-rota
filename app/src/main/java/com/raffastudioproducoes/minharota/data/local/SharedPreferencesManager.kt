@@ -146,6 +146,23 @@ class SharedPreferencesManager(context: Context) {
         }
     }
 
+    // --- Dados do Usuário (Perfil) ---
+    fun salvarString(chave: String, valor: String) {
+        sharedPreferences.edit().putString(chave, valor).apply()
+    }
+
+    fun obterString(chave: String, padrao: String = ""): String {
+        return sharedPreferences.getString(chave, padrao) ?: padrao
+    }
+
+    fun salvarBoolean(chave: String, valor: Boolean) {
+        sharedPreferences.edit().putBoolean(chave, valor).apply()
+    }
+
+    fun obterBoolean(chave: String, padrao: Boolean = false): Boolean {
+        return sharedPreferences.getBoolean(chave, padrao)
+    }
+
     companion object {
         private const val KEY_CAIXINHAS = "caixinhas"
         private const val KEY_TURNOS = "turnos"
