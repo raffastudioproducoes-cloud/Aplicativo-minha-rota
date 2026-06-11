@@ -74,15 +74,28 @@ class HojeViewModel : ViewModel() {
         _ganhoLiquido.value = _ganhoBruto.value - _custoRua.value
     }
 
+    private fun calcularGanhoLiquido() {
+        calcularLiquido()
+    }
+
     fun adicionarGanhoRapido(valor: Double) {
-        _ganhoBruto.value += valor
+        // Registrar na lista visual da tela Hoje
+        val agora = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
+        val ganho = GanhoRapido(horario = agora, valor = valor)
+        _ganhosRapidos.value = _ganhosRapidos.value + ganho
+
+        // Registrar na lista de persistência do Turno
         val novaCorrida = Corrida(
             id = UUID.randomUUID().toString(),
             valor = valor,
             timestamp = System.currentTimeMillis()
         )
         _corridasAtuais.value = _corridasAtuais.value + novaCorrida
+        
+        // Atualizar valores totais
+        _ganhoBruto.value += valor
         calcularLiquido()
+        calcularHorasTrabalhadas()
     }
 
     fun salvarTurno(context: Context, onSuccess: () -> Unit) {
@@ -152,17 +165,7 @@ class HojeViewModel : ViewModel() {
         calcularHorasTrabalhadas()
     }
 
-    fun registrarGanhoRapido(valor: Double) {
-        val agora = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
-        val ganho = GanhoRapido(horario = agora, valor = valor)
-        val listaAtual = _ganhosRapidos.value.toMutableList()
-        listaAtual.add(ganho)
-        _ganhosRapidos.value = listaAtual
-        
-        // Atualizar ganho bruto
-        _ganhoBruto.value += valor
-        calcularGanhoLiquido()
-    }
+
 
     private fun calcularHorasTrabalhadas() {
         val formatter = DateTimeFormatter.ofPattern("HH:mm")

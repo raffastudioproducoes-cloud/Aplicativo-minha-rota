@@ -42,6 +42,12 @@ fun ScaffoldPrincipalPush(
         label = "DrawerPushOffset"
     )
 
+    // Animar o arredondamento do canto quando o drawer abre
+    val cornerRadius by animateDpAsState(
+        targetValue = if (drawerState.isOpen) 24.dp else 0.dp,
+        label = "ContentCornerRadius"
+    )
+
     Box(modifier = Modifier.background(FundoDark)) {
         // Drawer (Push Navigation)
         Box(
@@ -57,11 +63,11 @@ fun ScaffoldPrincipalPush(
             )
         }
 
-        // Conteúdo Principal (Deslocado) com Canto Arredondado
+        // Conteúdo Principal (Deslocado) com Canto Arredondado Dinâmico
         Box(
             modifier = Modifier
                 .offset(x = drawerOffsetPx)
-                .clip(RoundedCornerShape(topStart = 24.dp, bottomStart = 24.dp))
+                .clip(RoundedCornerShape(topStart = cornerRadius, bottomStart = cornerRadius))
         ) {
             Scaffold(
                 topBar = {

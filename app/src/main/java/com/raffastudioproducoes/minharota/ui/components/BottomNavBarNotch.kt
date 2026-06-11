@@ -1,22 +1,11 @@
 package com.raffastudioproducoes.minharota.ui.components
 
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemDefaults
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -25,12 +14,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.raffastudioproducoes.minharota.ui.navigation.Rota
 import com.raffastudioproducoes.minharota.ui.navigation.itensNavegacao
 import com.raffastudioproducoes.minharota.ui.theme.CyanBright
 import com.raffastudioproducoes.minharota.ui.theme.ElectricBlue
@@ -47,114 +33,94 @@ fun BottomNavBarNotch(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(100.dp)
+            .height(90.dp)
     ) {
-        // NavBar com recorte côncavo (Notch)
-        Box(
+        // NavBar Principal
+        Surface(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .height(70.dp)
                 .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.surface)
-                .shadow(elevation = 8.dp)
+                .height(70.dp),
+            color = MaterialTheme.colorScheme.surface,
+            tonalElevation = 8.dp
         ) {
-            NavigationBar(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .height(70.dp),
-                containerColor = MaterialTheme.colorScheme.surface,
-                tonalElevation = 0.dp
+            Row(
+                modifier = Modifier.fillMaxSize(),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 itensNavegacao.forEachIndexed { index, item ->
-                    // Espaço vazio no meio para o FAB
+                    // Espaço central para o FAB
                     if (index == 2) {
-                        NavigationBarItem(
-                            selected = false,
-                            onClick = { },
-                            icon = { },
-                            enabled = false,
-                            colors = NavigationBarItemDefaults.colors(
-                                indicatorColor = Color.Transparent
-                            )
-                        )
+                        Spacer(modifier = Modifier.width(70.dp))
                     }
                     
-                    NavigationBarItem(
-                        selected = currentRoute == item.route,
-                        onClick = {
-                            if (currentRoute != item.route) {
+                    val isSelected = currentRoute == item.route
+                    
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxHeight()
+                            .padding(vertical = 8.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        // Halo Retangular Suave para o item ativo
+                        if (isSelected) {
+                            Box(
+                                modifier = Modifier
+                                    .size(width = 50.dp, height = 32.dp)
+                                    .background(
+                                        color = ElectricBlue.copy(alpha = 0.15f),
+                                        shape = RoundedCornerShape(8.dp)
+                                    )
+                            )
+                        }
+                        
+                        IconButton(onClick = {
+                            if (!isSelected) {
                                 navController.navigate(item.route) {
-                                    popUpTo(navController.graph.startDestinationId) {
-                                        saveState = true
-                                    }
+                                    popUpTo(navController.graph.startDestinationId) { saveState = true }
                                     launchSingleTop = true
                                     restoreState = true
                                 }
                             }
-                        },
-                        icon = {
-                            Box(modifier = Modifier.size(48.dp), contentAlignment = Alignment.Center) {
-                                // Halo Retangular Arredondado (RoundedCornerShape 12.dp)
-                                if (currentRoute == item.route) {
-                                    Box(
-                                        modifier = Modifier
-                                            .size(width = 56.dp, height = 40.dp)
-                                            .shadow(elevation = 8.dp, shape = RoundedCornerShape(12.dp))
-                                            .background(
-                                                brush = Brush.linearGradient(
-                                                    colors = listOf(
-                                                        ElectricBlue.copy(alpha = 0.3f),
-                                                        CyanBright.copy(alpha = 0.15f)
-                                                    )
-                                                ),
-                                                shape = RoundedCornerShape(12.dp)
-                                            )
-                                    )
-                                }
-                                Icon(
-                                    imageVector = item.icon,
-                                    contentDescription = item.title,
-                                    modifier = Modifier.size(24.dp)
-                                )
-                            }
-                        },
-                        label = {
-                            Text(text = item.title, style = MaterialTheme.typography.labelSmall)
-                        },
-                        colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = MaterialTheme.colorScheme.primary,
-                            selectedTextColor = MaterialTheme.colorScheme.primary,
-                            unselectedIconColor = Color.Gray,
-                            unselectedTextColor = Color.Gray,
-                            indicatorColor = Color.Transparent
-                        )
-                    )
+                        }) {
+                            Icon(
+                                imageVector = item.icon,
+                                contentDescription = item.title,
+                                tint = if (isSelected) ElectricBlue else Color.Gray,
+                                modifier = Modifier.size(24.dp)
+                            )
+                        }
+                    }
                 }
             }
         }
 
-        // FAB Squircle dentro do Notch (berço côncavo)
-        val fabGradient = Brush.linearGradient(
-            colors = listOf(VerdeEntrada, CyanBright)
-        )
-        
+        // FAB Squircle (Quadrado Arredondado) encaixado
         Box(
             modifier = Modifier
                 .align(Alignment.TopCenter)
-                .offset(y = (-15).dp) // Ajuste para encaixar no berço
-                .size(60.dp)
-                .shadow(elevation = 16.dp, shape = RoundedCornerShape(16.dp))
-                .background(brush = fabGradient, shape = RoundedCornerShape(16.dp)),
+                .offset(y = 0.dp)
+                .size(56.dp)
+                .shadow(elevation = 12.dp, shape = RoundedCornerShape(16.dp))
+                .background(
+                    brush = Brush.linearGradient(
+                        colors = listOf(VerdeEntrada, CyanBright)
+                    ),
+                    shape = RoundedCornerShape(16.dp)
+                )
+                .clip(RoundedCornerShape(16.dp)),
             contentAlignment = Alignment.Center
         ) {
-            androidx.compose.material3.IconButton(
+            IconButton(
                 onClick = onFabClick,
-                modifier = Modifier.size(60.dp)
+                modifier = Modifier.fillMaxSize()
             ) {
                 Icon(
-                    imageVector = Icons.Rounded.Add,
+                    imageVector = Icons.Outlined.Add,
                     contentDescription = "Adicionar",
-                    modifier = Modifier.size(30.dp),
+                    modifier = Modifier.size(32.dp),
                     tint = Color.Black
                 )
             }

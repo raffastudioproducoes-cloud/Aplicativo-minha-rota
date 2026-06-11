@@ -13,15 +13,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.AccountBalanceWallet
-import androidx.compose.material.icons.rounded.BarChart
-import androidx.compose.material.icons.rounded.Close
-import androidx.compose.material.icons.rounded.Inventory2
-import androidx.compose.material.icons.rounded.MoneyOff
-import androidx.compose.material.icons.rounded.ReceiptLong
-import androidx.compose.material.icons.rounded.Settings
-import androidx.compose.material.icons.rounded.Today
-import androidx.compose.material.icons.rounded.TwoWheeler
+import androidx.compose.material.icons.outlined.AccountBalanceWallet
+import androidx.compose.material.icons.outlined.BarChart
+import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.outlined.Inventory2
+import androidx.compose.material.icons.outlined.MoneyOff
+import androidx.compose.material.icons.outlined.ReceiptLong
+import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.Today
+import androidx.compose.material.icons.outlined.TwoWheeler
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -38,7 +38,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.raffastudioproducoes.minharota.ui.navigation.itensNavegacao
 import com.raffastudioproducoes.minharota.ui.navigation.Rota
 import com.raffastudioproducoes.minharota.ui.theme.CyanBright
 import com.raffastudioproducoes.minharota.ui.theme.ElectricBlue
@@ -61,7 +60,7 @@ fun DrawerConteudoGradientRainbow(navController: NavController, onClose: () -> U
             horizontalArrangement = androidx.compose.foundation.layout.Arrangement.End
         ) {
             IconButton(onClick = onClose) {
-                Icon(Icons.Rounded.Close, contentDescription = "Fechar Menu")
+                Icon(Icons.Outlined.Close, contentDescription = "Fechar Menu")
             }
         }
         
@@ -83,19 +82,19 @@ fun DrawerConteudoGradientRainbow(navController: NavController, onClose: () -> U
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
         )
 
-        // Itens Principais com Gradientes Arco-Íris Translúcidos
+        // Itens Principais com Gradientes Arco-Íris para Transparente
         val mainItems = listOf(
-            Triple(Icons.Rounded.Today, "Hoje", Brush.linearGradient(
-                colors = listOf(TealAccent, VerdeEntrada.copy(alpha = 0f), Color.Transparent)
+            Triple(Icons.Outlined.Today, "Hoje", Brush.linearGradient(
+                colors = listOf(TealAccent.copy(alpha = 0.8f), Color.Transparent)
             )),
-            Triple(Icons.Rounded.AccountBalanceWallet, "Contas", Brush.linearGradient(
-                colors = listOf(ElectricBlue, CyanBright.copy(alpha = 0.5f), Color.Transparent)
+            Triple(Icons.Outlined.AccountBalanceWallet, "Contas", Brush.linearGradient(
+                colors = listOf(ElectricBlue.copy(alpha = 0.8f), Color.Transparent)
             )),
-            Triple(Icons.Rounded.Inventory2, "Caixas", Brush.linearGradient(
-                colors = listOf(PinkVibrant, OrangeWarm.copy(alpha = 0.5f), Color.Transparent)
+            Triple(Icons.Outlined.Inventory2, "Caixas", Brush.linearGradient(
+                colors = listOf(PinkVibrant.copy(alpha = 0.8f), Color.Transparent)
             )),
-            Triple(Icons.Rounded.BarChart, "Gráficos", Brush.linearGradient(
-                colors = listOf(VerdeEntrada, ElectricBlue.copy(alpha = 0.5f), Color.Transparent)
+            Triple(Icons.Outlined.BarChart, "Gráficos", Brush.linearGradient(
+                colors = listOf(VerdeEntrada.copy(alpha = 0.8f), Color.Transparent)
             ))
         )
 
@@ -125,19 +124,19 @@ fun DrawerConteudoGradientRainbow(navController: NavController, onClose: () -> U
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
         )
 
-        // Itens Secundários com Gradientes Arco-Íris Translúcidos
+        // Itens Secundários com Gradientes Arco-Íris para Transparente
         val secondaryItems = listOf(
-            Triple(Icons.Rounded.ReceiptLong, "Extrato", Brush.linearGradient(
-                colors = listOf(CyanBright, ElectricBlue.copy(alpha = 0.5f), Color.Transparent)
+            Triple(Icons.Outlined.ReceiptLong, "Extrato", Brush.linearGradient(
+                colors = listOf(CyanBright.copy(alpha = 0.8f), Color.Transparent)
             )),
-            Triple(Icons.Rounded.MoneyOff, "Dívidas", Brush.linearGradient(
-                colors = listOf(OrangeWarm, PinkVibrant.copy(alpha = 0.5f), Color.Transparent)
+            Triple(Icons.Outlined.MoneyOff, "Dívidas", Brush.linearGradient(
+                colors = listOf(OrangeWarm.copy(alpha = 0.8f), Color.Transparent)
             )),
-            Triple(Icons.Rounded.TwoWheeler, "Garagem", Brush.linearGradient(
-                colors = listOf(VerdeEntrada, TealAccent.copy(alpha = 0.5f), Color.Transparent)
+            Triple(Icons.Outlined.TwoWheeler, "Garagem", Brush.linearGradient(
+                colors = listOf(VerdeEntrada.copy(alpha = 0.8f), Color.Transparent)
             )),
-            Triple(Icons.Rounded.Settings, "Configurações", Brush.linearGradient(
-                colors = listOf(ElectricBlue, VerdeEntrada.copy(alpha = 0.5f), Color.Transparent)
+            Triple(Icons.Outlined.Settings, "Configurações", Brush.linearGradient(
+                colors = listOf(ElectricBlue.copy(alpha = 0.8f), Color.Transparent)
             ))
         )
 
@@ -170,10 +169,10 @@ fun DrawerItemGradientRainbow(
 ) {
     Box(
         modifier = Modifier
-            .fillMaxWidth(0.85f)
+            .fillMaxWidth(0.9f)
             .height(56.dp)
-            .padding(horizontal = 16.dp, vertical = 8.dp)
-            .background(brush = gradient, shape = RoundedCornerShape(16.dp))
+            .padding(horizontal = 12.dp, vertical = 4.dp)
+            .background(brush = gradient, shape = RoundedCornerShape(topStart = 28.dp, bottomStart = 28.dp, topEnd = 0.dp, bottomEnd = 0.dp))
             .clickable(onClick = onClick),
         contentAlignment = Alignment.CenterStart
     ) {
