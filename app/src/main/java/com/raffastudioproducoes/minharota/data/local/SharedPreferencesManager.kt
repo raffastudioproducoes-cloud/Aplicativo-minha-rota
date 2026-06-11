@@ -179,6 +179,14 @@ class SharedPreferencesManager(context: Context) {
         return sharedPreferences.getString(KEY_FOTO_PERFIL, "") ?: ""
     }
 
+    fun salvarIsPro(isPro: Boolean) {
+        sharedPreferences.edit().putBoolean(KEY_IS_PRO, isPro).apply()
+    }
+
+    fun obterIsPro(): Boolean {
+        return sharedPreferences.getBoolean(KEY_IS_PRO, false)
+    }
+
     companion object {
         private const val KEY_CAIXINHAS = "caixinhas"
         private const val KEY_TURNOS = "turnos"
@@ -190,5 +198,6 @@ class SharedPreferencesManager(context: Context) {
         private const val KEY_EMAIL = "email"
         private const val KEY_DATA_ANIVERSARIO = "data_aniversario"
         private const val KEY_FOTO_PERFIL = "foto_perfil"
+        private const val KEY_IS_PRO = "is_pro"
     }
 }

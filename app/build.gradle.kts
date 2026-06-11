@@ -8,6 +8,7 @@ android {
     namespace = "com.raffastudioproducoes.minharota"
     compileSdk = 34
 
+
     defaultConfig {
         applicationId = "com.raffastudioproducoes.minharota"
         minSdk = 26
@@ -41,13 +42,9 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.8"
+        kotlinCompilerExtensionVersion = "1.5.15"
     }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
+
 }
 
 dependencies {

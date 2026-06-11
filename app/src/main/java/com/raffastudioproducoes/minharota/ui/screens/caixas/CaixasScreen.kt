@@ -5,6 +5,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.Lock
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -13,9 +14,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+
+
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.raffastudioproducoes.minharota.domain.model.Caixinha
 import com.raffastudioproducoes.minharota.ui.components.CardCaixinha
+import com.raffastudioproducoes.minharota.ui.components.PaywallModal
 import com.raffastudioproducoes.minharota.ui.screens.hoje.HojeViewModel
+import com.raffastudioproducoes.minharota.ui.theme.FundoDark
 
 @Composable
 fun CaixasScreen(
@@ -25,8 +33,11 @@ fun CaixasScreen(
     val context = LocalContext.current
     val caixinhas by viewModel.caixinhas.collectAsState()
     val ganhoLiquidoHoje by hojeViewModel.ganhoLiquido.collectAsState()
+    val isPro by viewModel.isPro.collectAsState()
+    val showPaywallModal by viewModel.showPaywallModal.collectAsState()
 
     LaunchedEffect(Unit) {
+        viewModel.carregarStatusPro(context)
         viewModel.carregarCaixinhas(context)
     }
 
@@ -86,7 +97,11 @@ fun CaixasScreen(
             item {
                 Spacer(modifier = Modifier.height(16.dp))
                 OutlinedButton(
-                    onClick = { /* Abrir modal de nova caixinha */ },
+                    onClick = {
+                        viewModel.adicionarCaixinha(context, Caixinha(id = "", nome = "Nova Caixinha", percentual = 0.0)) {
+                            // Sucesso ao adicionar, se necessário
+                        }
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)
@@ -98,6 +113,31 @@ fun CaixasScreen(
                     Text("Nova Caixinha")
                 }
             }
+
+            item {
+                Spacer(modifier = Modifier.height(16.dp))
+                Button(
+                    onClick = { /* Implementar simulação de rendimento */ },
+                    modifier = Modifier.fillMaxWidth().height(56.dp),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(alpha = 0.05f))
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text("Simular Rendimento", color = Color.White)
+                        if (!isPro) {
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Icon(imageVector = Icons.Rounded.Lock, contentDescription = "Recurso Pro", tint = Color.White.copy(alpha = 0.7f))
+                        }
+                    }
+                }
+            }
         }
+    }
+
+    if (showPaywallModal) {
+        PaywallModal(
+            onDismiss = { viewModel.dismissPaywallModal() },
+            onUpgrade = { viewModel.upgradeToPro(context) }
+        )
     }
 }
