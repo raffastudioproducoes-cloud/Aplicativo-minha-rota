@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.sp
 import com.raffastudioproducoes.minharota.ui.theme.FundoDark
 import com.raffastudioproducoes.minharota.ui.theme.VerdeEntrada
 import kotlinx.coroutines.launch
+import androidx.compose.foundation.ExperimentalFoundationApi
 
 data class OnboardingPage(
     val titulo: String,
@@ -27,6 +28,7 @@ data class OnboardingPage(
     val icone: ImageVector
 )
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnboardingScreen(onOnboardingComplete: () -> Unit) {
     val pages = listOf(

@@ -41,6 +41,7 @@ fun BottomNavBarSquircle(
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+    val surfaceColor = MaterialTheme.colorScheme.surface
 
     Box(
         modifier = Modifier
@@ -91,7 +92,7 @@ fun BottomNavBarSquircle(
                     }
                     drawPath(
                         path = path,
-                        color = MaterialTheme.colorScheme.surface
+                        color = surfaceColor
                     )
                 }
         ) {
