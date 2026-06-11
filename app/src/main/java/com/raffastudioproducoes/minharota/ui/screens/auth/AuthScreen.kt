@@ -3,10 +3,6 @@ package com.raffastudioproducoes.minharota.ui.screens.auth
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Google
-
-
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -34,19 +30,19 @@ fun AuthScreen(onAuthSuccess: () -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            // Logo
+            // Logo Minimalista
             Text(
                 text = "◯",
-                fontSize = 48.sp,
+                fontSize = 64.sp,
                 fontWeight = FontWeight.Thin,
-                color = Color.White,
+                color = VerdeEntrada,
                 modifier = Modifier.padding(bottom = 16.dp)
             )
 
             // Título
             Text(
-                text = "Bem-vindo de Volta",
-                fontSize = 28.sp,
+                text = "Minha Rota",
+                fontSize = 32.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.White,
                 textAlign = TextAlign.Center,
@@ -55,37 +51,29 @@ fun AuthScreen(onAuthSuccess: () -> Unit) {
 
             // Subtítulo
             Text(
-                text = "Faça login para continuar gerenciando suas rotas",
+                text = "Sua jornada, seu controle financeiro.\nFaça login para continuar.",
                 fontSize = 14.sp,
                 color = Color.Gray,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(bottom = 48.dp)
             )
 
-            // Botão Google
+            // Botão Google (Estilizado sem ícone vetorial problemático)
             Button(
                 onClick = { /* Implementar OAuth Google */ },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                shape = RoundedCornerShape(12.dp),
-                colors = ButtonDefaults.outlinedButtonColors(
-                    contentColor = Color.White
-                ),
-                border = androidx.compose.foundation.BorderStroke(1.dp, Color.White)
-            ) {
-                Icon(
-                    imageVector = Icons.Rounded.Google,
-                    contentDescription = "Google",
-                    modifier = Modifier
-                        .size(20.dp)
-                        .padding(end = 8.dp),
-                    tint = Color.White
+                shape = RoundedCornerShape(16.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.White,
+                    contentColor = Color.Black
                 )
+            ) {
                 Text(
                     text = "Continuar com Google",
                     fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.Bold
                 )
             }
 
@@ -97,48 +85,66 @@ fun AuthScreen(onAuthSuccess: () -> Unit) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                shape = RoundedCornerShape(12.dp),
-                colors = ButtonDefaults.outlinedButtonColors(
+                shape = RoundedCornerShape(16.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF1A1A1A),
                     contentColor = Color.White
-                ),
-                border = androidx.compose.foundation.BorderStroke(1.dp, Color.White)
+                )
             ) {
                 Text(
-                    text = "◯ Continuar com Apple",
+                    text = " Continuar com Apple",
                     fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.Bold
                 )
             }
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Botão de Demonstração
+            // Divisor Visual
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Divider(modifier = Modifier.weight(1f), color = Color.White.copy(alpha = 0.1f))
+                Text(
+                    text = "ou",
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    color = Color.Gray,
+                    fontSize = 12.sp
+                )
+                Divider(modifier = Modifier.weight(1f), color = Color.White.copy(alpha = 0.1f))
+            }
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            // Botão de Demonstração (Visitante)
             Button(
                 onClick = onAuthSuccess,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                shape = RoundedCornerShape(12.dp),
+                shape = RoundedCornerShape(16.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = VerdeEntrada
+                    containerColor = VerdeEntrada.copy(alpha = 0.1f),
+                    contentColor = VerdeEntrada
                 )
             ) {
                 Text(
                     text = "Entrar como Visitante",
                     fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.Black
+                    fontWeight = FontWeight.Bold
                 )
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(48.dp))
 
             // Texto de Termos
             Text(
-                text = "Ao continuar, você concorda com nossos Termos de Serviço e Política de Privacidade",
-                fontSize = 12.sp,
-                color = Color.Gray,
-                textAlign = TextAlign.Center
+                text = "Ao continuar, você concorda com nossos\nTermos de Serviço e Política de Privacidade",
+                fontSize = 11.sp,
+                color = Color.Gray.copy(alpha = 0.6f),
+                textAlign = TextAlign.Center,
+                lineHeight = 16.sp
             )
         }
     }

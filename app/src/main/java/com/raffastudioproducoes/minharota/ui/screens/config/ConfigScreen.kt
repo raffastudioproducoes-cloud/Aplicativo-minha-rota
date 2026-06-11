@@ -2,9 +2,9 @@ package com.raffastudioproducoes.minharota.ui.screens.config
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Backup
-import androidx.compose.material.icons.rounded.Info
-import androidx.compose.material.icons.rounded.Palette
+import androidx.compose.material.icons.outlined.Backup
+import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.Palette
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -16,39 +16,48 @@ import androidx.compose.ui.unit.dp
 fun ConfigScreen() {
     var darkMode by remember { mutableStateOf(true) }
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         Text(
             text = "Configurações",
-            style = MaterialTheme.typography.headlineSmall,
+            style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(bottom = 24.dp)
         )
 
-        ListItem(
-            headlineContent = { Text("Tema Escuro") },
-            supportingContent = { Text("Ativar/Desativar modo dark") },
-            leadingContent = { Icon(Icons.Rounded.Palette, contentDescription = null) },
-            trailingContent = {
-                Switch(checked = darkMode, onCheckedChange = { darkMode = it })
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
+        ) {
+            Column {
+                ListItem(
+                    headlineContent = { Text("Tema Escuro") },
+                    supportingContent = { Text("Ativar/Desativar modo dark") },
+                    leadingContent = { Icon(Icons.Outlined.Palette, contentDescription = null) },
+                    trailingContent = {
+                        Switch(checked = darkMode, onCheckedChange = { darkMode = it })
+                    },
+                    colors = ListItemDefaults.colors(containerColor = androidx.compose.ui.graphics.Color.Transparent)
+                )
+
+                Divider(modifier = Modifier.padding(horizontal = 16.dp), color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.05f))
+
+                ListItem(
+                    headlineContent = { Text("Backup e Restauração") },
+                    supportingContent = { Text("Sincronizar dados na nuvem") },
+                    leadingContent = { Icon(Icons.Outlined.Backup, contentDescription = null) },
+                    colors = ListItemDefaults.colors(containerColor = androidx.compose.ui.graphics.Color.Transparent)
+                )
+
+                Divider(modifier = Modifier.padding(horizontal = 16.dp), color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.05f))
+
+                ListItem(
+                    headlineContent = { Text("Sobre o Aplicativo") },
+                    supportingContent = { Text("Versão 1.5.0-beta") },
+                    leadingContent = { Icon(Icons.Outlined.Info, contentDescription = null) },
+                    colors = ListItemDefaults.colors(containerColor = androidx.compose.ui.graphics.Color.Transparent)
+                )
             }
-        )
-
-        Divider()
-
-        ListItem(
-            headlineContent = { Text("Backup e Restauração") },
-            supportingContent = { Text("Sincronizar dados na nuvem") },
-            leadingContent = { Icon(Icons.Rounded.Backup, contentDescription = null) },
-            modifier = Modifier.padding(vertical = 8.dp)
-        )
-
-        Divider()
-
-        ListItem(
-            headlineContent = { Text("Sobre o Aplicativo") },
-            supportingContent = { Text("Versão 1.0.0-fase9") },
-            leadingContent = { Icon(Icons.Rounded.Info, contentDescription = null) }
-        )
+        }
 
         Spacer(modifier = Modifier.weight(1f))
 

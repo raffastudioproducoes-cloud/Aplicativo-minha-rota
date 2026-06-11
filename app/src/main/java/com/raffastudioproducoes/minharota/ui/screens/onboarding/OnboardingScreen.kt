@@ -1,35 +1,23 @@
 package com.raffastudioproducoes.minharota.ui.screens.onboarding
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.BarChart
-import androidx.compose.material.icons.rounded.DirectionsCar
-import androidx.compose.material.icons.rounded.Inventory2
-import androidx.compose.material.icons.rounded.Map
-import androidx.compose.material.icons.rounded.Receipt
-import androidx.compose.material.icons.rounded.Settings
-import androidx.compose.material.icons.rounded.TrendingUp
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.outlined.BarChart
+import androidx.compose.material.icons.outlined.DirectionsCar
+import androidx.compose.material.icons.outlined.Inventory2
+import androidx.compose.material.icons.outlined.Map
+import androidx.compose.material.icons.outlined.Receipt
+import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.TrendingUp
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,12 +26,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.rememberPagerState
 import com.raffastudioproducoes.minharota.ui.theme.FundoDark
 import com.raffastudioproducoes.minharota.ui.theme.VerdeEntrada
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 data class OnboardingPage(
@@ -56,44 +40,45 @@ val onboardingPages = listOf(
     OnboardingPage(
         title = "Bem-vindo ao MinhaRota",
         description = "Gerencie seus ganhos e despesas de forma inteligente",
-        icon = Icons.Rounded.DirectionsCar
+        icon = Icons.Outlined.DirectionsCar
     ),
     OnboardingPage(
         title = "Registre seus Turnos",
         description = "Acompanhe cada turno de trabalho com detalhes de ganhos e custos",
-        icon = Icons.Rounded.Receipt
+        icon = Icons.Outlined.Receipt
     ),
     OnboardingPage(
         title = "Organize com Caixinhas",
         description = "Separe seus ganhos em categorias personalizadas",
-        icon = Icons.Rounded.Inventory2
+        icon = Icons.Outlined.Inventory2
     ),
     OnboardingPage(
         title = "Visualize Mapa de Calor",
         description = "Descubra os melhores horários e dias para trabalhar",
-        icon = Icons.Rounded.BarChart
+        icon = Icons.Outlined.BarChart
     ),
     OnboardingPage(
         title = "Controle sua Garagem",
         description = "Acompanhe manutenções e custos do seu veículo",
-        icon = Icons.Rounded.Settings
+        icon = Icons.Outlined.Settings
     ),
     OnboardingPage(
         title = "Analise Tendências",
         description = "Veja gráficos e estatísticas de desempenho",
-        icon = Icons.Rounded.TrendingUp
+        icon = Icons.Outlined.TrendingUp
     ),
     OnboardingPage(
         title = "Comece Agora",
         description = "Você está pronto para otimizar seus ganhos!",
-        icon = Icons.Rounded.Map
+        icon = Icons.Outlined.Map
     )
 )
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnboardingScreen(onNavigateToLogin: () -> Unit) {
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState(pageCount = { onboardingPages.size })
+    val scope = rememberCoroutineScope()
 
     Box(
         modifier = Modifier
@@ -101,7 +86,6 @@ fun OnboardingScreen(onNavigateToLogin: () -> Unit) {
             .background(FundoDark)
     ) {
         HorizontalPager(
-            count = onboardingPages.size,
             state = pagerState,
             modifier = Modifier.fillMaxSize()
         ) { page ->
@@ -112,15 +96,15 @@ fun OnboardingScreen(onNavigateToLogin: () -> Unit) {
         Row(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(bottom = 100.dp),
+                .padding(bottom = 120.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             repeat(onboardingPages.size) { index ->
                 Box(
                     modifier = Modifier
-                        .size(if (index == pagerState.currentPage) 12.dp else 8.dp)
+                        .size(if (index == pagerState.currentPage) 10.dp else 6.dp)
                         .background(
-                            color = if (index == pagerState.currentPage) VerdeEntrada else Color.Gray,
+                            color = if (index == pagerState.currentPage) VerdeEntrada else Color.White.copy(alpha = 0.2f),
                             shape = CircleShape
                         )
                 )
@@ -136,16 +120,20 @@ fun OnboardingScreen(onNavigateToLogin: () -> Unit) {
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             if (pagerState.currentPage > 0) {
-                Button(
-                    onClick = { /* Voltar */ },
+                OutlinedButton(
+                    onClick = {
+                        scope.launch {
+                            pagerState.animateScrollToPage(pagerState.currentPage - 1)
+                        }
+                    },
                     modifier = Modifier
                         .weight(1f)
                         .height(56.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Transparent
-                    )
+                    shape = RoundedCornerShape(16.dp),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, Color.White.copy(alpha = 0.1f)),
+                    colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White)
                 ) {
-                    Text("Voltar", color = VerdeEntrada)
+                    Text("Voltar")
                 }
             }
 
@@ -153,18 +141,23 @@ fun OnboardingScreen(onNavigateToLogin: () -> Unit) {
                 onClick = {
                     if (pagerState.currentPage == onboardingPages.size - 1) {
                         onNavigateToLogin()
+                    } else {
+                        scope.launch {
+                            pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                        }
                     }
                 },
                 modifier = Modifier
                     .weight(1f)
                     .height(56.dp),
+                shape = RoundedCornerShape(16.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = VerdeEntrada
+                    containerColor = VerdeEntrada,
+                    contentColor = Color.Black
                 )
             ) {
                 Text(
-                    if (pagerState.currentPage == onboardingPages.size - 1) "Começar" else "Próximo",
-                    color = Color.Black,
+                    text = if (pagerState.currentPage == onboardingPages.size - 1) "Começar" else "Próximo",
                     fontWeight = FontWeight.Bold
                 )
             }
@@ -177,25 +170,32 @@ fun OnboardingPageContent(page: OnboardingPage) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(24.dp),
+            .padding(32.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Icon(
-            imageVector = page.icon,
-            contentDescription = page.title,
-            modifier = Modifier.size(100.dp),
-            tint = VerdeEntrada
-        )
+        Surface(
+            modifier = Modifier.size(160.dp),
+            color = VerdeEntrada.copy(alpha = 0.05f),
+            shape = CircleShape
+        ) {
+            Box(contentAlignment = Alignment.Center) {
+                Icon(
+                    imageVector = page.icon,
+                    contentDescription = null,
+                    modifier = Modifier.size(80.dp),
+                    tint = VerdeEntrada
+                )
+            }
+        }
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(48.dp))
 
         Text(
             text = page.title,
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
             color = Color.White,
-            fontSize = 28.sp,
             textAlign = TextAlign.Center
         )
 
@@ -206,7 +206,7 @@ fun OnboardingPageContent(page: OnboardingPage) {
             style = MaterialTheme.typography.bodyLarge,
             color = Color.Gray,
             textAlign = TextAlign.Center,
-            fontSize = 16.sp
+            lineHeight = 24.sp
         )
     }
 }

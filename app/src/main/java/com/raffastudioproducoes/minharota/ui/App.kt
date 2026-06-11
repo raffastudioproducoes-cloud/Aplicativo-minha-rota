@@ -24,32 +24,84 @@ import com.raffastudioproducoes.minharota.ui.screens.extrato.ExtratoScreen
 import com.raffastudioproducoes.minharota.ui.screens.dividas.DividasScreen
 import com.raffastudioproducoes.minharota.ui.screens.perfil.PerfilScreen
 import com.raffastudioproducoes.minharota.ui.screens.config.ConfigScreen
+import com.raffastudioproducoes.minharota.ui.screens.splash.SplashScreen
+import com.raffastudioproducoes.minharota.ui.screens.onboarding.OnboardingScreen
+import com.raffastudioproducoes.minharota.ui.screens.auth.AuthScreen
 
 @Composable
 fun MainAppContent() {
     val navController = rememberNavController()
     val hojeViewModel: HojeViewModel = viewModel()
 
-    ScaffoldPrincipalPush(
+    NavHost(
         navController = navController,
-        hojeViewModel = hojeViewModel
-    ) { paddingValues ->
-        NavHost(
-            navController = navController,
-            startDestination = Rota.Hoje.route,
-            modifier = Modifier.padding(paddingValues)
-        ) {
-            composable(Rota.Hoje.route) { HojeScreen(viewModel = hojeViewModel) }
-            composable(Rota.Contas.route) { ContasScreen() }
-            composable(Rota.Caixas.route) { 
-                CaixasScreen(hojeViewModel = hojeViewModel) 
+        startDestination = "splash"
+    ) {
+        composable("splash") {
+            SplashScreen(onFinish = {
+                navController.navigate("onboarding") {
+                    popUpTo("splash") { inclusive = true }
+                }
+            })
+        }
+        composable("onboarding") {
+            OnboardingScreen(onNavigateToLogin = {
+                navController.navigate("login") {
+                    popUpTo("onboarding") { inclusive = true }
+                }
+            })
+        }
+        composable("login") {
+            AuthScreen(onAuthSuccess = {
+                navController.navigate(Rota.Hoje.route) {
+                    popUpTo("login") { inclusive = true }
+                }
+            })
+        }
+        composable(Rota.Hoje.route) {
+            ScaffoldPrincipalPush(navController, hojeViewModel) { padding ->
+                Box(modifier = Modifier.padding(padding)) { HojeScreen(viewModel = hojeViewModel) }
             }
-            composable(Rota.Graficos.route) { GraficosScreen() }
-            composable(Rota.Garagem.route) { GaragemScreen() }
-            composable(Rota.Extrato.route) { ExtratoScreen() }
-            composable(Rota.Dividas.route) { DividasScreen() }
-            composable(Rota.Perfil.route) { PerfilScreen() }
-            composable(Rota.Configuracoes.route) { ConfigScreen() }
+        }
+        composable(Rota.Contas.route) {
+            ScaffoldPrincipalPush(navController, hojeViewModel) { padding ->
+                Box(modifier = Modifier.padding(padding)) { ContasScreen() }
+            }
+        }
+        composable(Rota.Caixas.route) {
+            ScaffoldPrincipalPush(navController, hojeViewModel) { padding ->
+                Box(modifier = Modifier.padding(padding)) { CaixasScreen(hojeViewModel = hojeViewModel) }
+            }
+        }
+        composable(Rota.Graficos.route) {
+            ScaffoldPrincipalPush(navController, hojeViewModel) { padding ->
+                Box(modifier = Modifier.padding(padding)) { GraficosScreen() }
+            }
+        }
+        composable(Rota.Garagem.route) {
+            ScaffoldPrincipalPush(navController, hojeViewModel) { padding ->
+                Box(modifier = Modifier.padding(padding)) { GaragemScreen() }
+            }
+        }
+        composable(Rota.Extrato.route) {
+            ScaffoldPrincipalPush(navController, hojeViewModel) { padding ->
+                Box(modifier = Modifier.padding(padding)) { ExtratoScreen() }
+            }
+        }
+        composable(Rota.Dividas.route) {
+            ScaffoldPrincipalPush(navController, hojeViewModel) { padding ->
+                Box(modifier = Modifier.padding(padding)) { DividasScreen() }
+            }
+        }
+        composable(Rota.Perfil.route) {
+            ScaffoldPrincipalPush(navController, hojeViewModel) { padding ->
+                Box(modifier = Modifier.padding(padding)) { PerfilScreen() }
+            }
+        }
+        composable(Rota.Configuracoes.route) {
+            ScaffoldPrincipalPush(navController, hojeViewModel) { padding ->
+                Box(modifier = Modifier.padding(padding)) { ConfigScreen() }
+            }
         }
     }
 }

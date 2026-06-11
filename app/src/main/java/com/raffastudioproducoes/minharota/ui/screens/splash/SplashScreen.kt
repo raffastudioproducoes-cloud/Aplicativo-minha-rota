@@ -14,7 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.DirectionsCar
+import androidx.compose.material.icons.outlined.DirectionsCar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -35,12 +35,12 @@ import com.raffastudioproducoes.minharota.ui.theme.VerdeEntrada
 import kotlinx.coroutines.delay
 
 @Composable
-fun SplashScreen(onNavigateToMain: () -> Unit) {
+fun SplashScreen(onFinish: () -> Unit) {
     var showAnimation by remember { mutableStateOf(true) }
 
     LaunchedEffect(Unit) {
         delay(3000) // 3 segundos
-        onNavigateToMain()
+        onFinish()
     }
 
     Column(
@@ -52,7 +52,7 @@ fun SplashScreen(onNavigateToMain: () -> Unit) {
     ) {
         // Logotipo
         Icon(
-            imageVector = Icons.Rounded.DirectionsCar,
+            imageVector = Icons.Outlined.DirectionsCar,
             contentDescription = "MinhaRota Logo",
             modifier = Modifier.size(80.dp),
             tint = VerdeEntrada
