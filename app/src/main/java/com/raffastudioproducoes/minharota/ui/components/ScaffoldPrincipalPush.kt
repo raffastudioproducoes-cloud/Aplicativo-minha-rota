@@ -60,24 +60,44 @@ fun ScaffoldPrincipalPush(
             val context = LocalContext.current
             val prefsManager = SharedPreferencesManager(context)
             DrawerConteudoGradientRainbowV2(
-                navController = navController,
-                onClose = {
-                    scope.launch { drawerState.close() }
+                drawerState = drawerState,
+                scope = scope,
+                onNavigate = { route ->
+                    navController.navigate(route) {
+                        popUpTo(navController.graph.startDestinationId) { saveState = true }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
                 },
-                prefsManager = prefsManager
+                currentRoute = navController.currentDestination?.route ?: "",
+                sharedPreferencesManager = prefsManager
             )
         }
 
-        // Conteúdo Principal (Deslocado) com Canto Arredondado Dinâmico
+        // Conteúdo Principal (Deslocado) com Canto Arredondado Dinâmico (Cima e Baixo)
         Box(
             modifier = Modifier
                 .offset(x = drawerOffsetPx)
-                .clip(RoundedCornerShape(topStart = cornerRadius, bottomStart = cornerRadius))
+                .clip(
+                    RoundedCornerShape(
+                        topStart = cornerRadius,
+                        bottomStart = cornerRadius,
+                        topEnd = 0.dp,
+                        bottomEnd = 0.dp
+                    )
+                )
         ) {
             Scaffold(
                 topBar = {
                     if (!isRidingMode) {
-                        HeaderSuperior(onDrawerClick = { scope.launch { drawerState.open() } }, drawerState = drawerState)
+                        HeaderSuperior(
+                            onDrawerClick = {
+                                scope.launch {
+                                    if (drawerState.isOpen) drawerState.close() else drawerState.open()
+                                }
+                            },
+                            drawerState = drawerState
+                        )
                     }
                 },
                 bottomBar = {
