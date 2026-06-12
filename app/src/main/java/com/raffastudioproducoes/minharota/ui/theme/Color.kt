@@ -21,3 +21,9 @@ val OrangeWarm = Color(0xFFF97316) // Orange Warm
 val HaloBlue = Color(0xFF0EA5E9).copy(alpha = 0.6f) // Para efeito glow
 val GlassDark = Color(0xFF121214).copy(alpha = 0.8f) // Para glassmorphism
 
+
+// Paleta para Tema Claro
+val FundoLight = Color(0xFFF4F4F6) // Cinza claro/chumbo suave
+val SurfaceLight = Color(0xFFFFFFFF) // Branco puro para superfícies
+val TextoPrimaryLight = Color(0xFF1A1A1A) // Grafite escuro/carbono para texto
+val TextoSecondaryLight = Color(0xFF6B6B6B) // Cinza médio para texto secundário
