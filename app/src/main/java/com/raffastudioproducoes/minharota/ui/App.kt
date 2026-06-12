@@ -27,6 +27,7 @@ import com.raffastudioproducoes.minharota.ui.screens.config.ConfigScreen
 import com.raffastudioproducoes.minharota.ui.screens.splash.SplashScreen
 import com.raffastudioproducoes.minharota.ui.screens.onboarding.OnboardingScreen
 import com.raffastudioproducoes.minharota.ui.screens.auth.AuthScreen
+import com.raffastudioproducoes.minharota.ui.screens.contadiaria.ContaDiariaScreen
 
 @Composable
 fun MainAppContent() {
@@ -91,6 +92,11 @@ fun MainAppContent() {
         composable(Rota.Dividas.route) {
             ScaffoldPrincipalPush(navController, hojeViewModel) { padding ->
                 Box(modifier = Modifier.padding(padding)) { DividasScreen() }
+            }
+        }
+        composable(Rota.ContaDiaria.route) {
+            ScaffoldPrincipalPush(navController, hojeViewModel) { padding ->
+                Box(modifier = Modifier.padding(padding)) { ContaDiariaScreen() }
             }
         }
         composable(Rota.Perfil.route) {

@@ -60,6 +60,14 @@ data class Divida(
 )
 
 @Serializable
+data class ContaDiaria(
+    val id: String,
+    val descricao: String,
+    val valor: Double,
+    val frequencia: String // "Diario", "Semanal", "Quinzenal", "Mensal"
+)
+
+@Serializable
 data class Veiculo(
     val id: String = "veiculo_unico", // Simplificando para um único veículo por enquanto
     val quilometragemAtual: Double,

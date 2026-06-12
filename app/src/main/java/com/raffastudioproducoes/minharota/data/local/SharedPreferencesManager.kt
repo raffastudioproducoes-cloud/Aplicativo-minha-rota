@@ -9,6 +9,7 @@ import com.raffastudioproducoes.minharota.domain.model.Turno
 import com.raffastudioproducoes.minharota.domain.model.Divida
 import com.raffastudioproducoes.minharota.domain.model.Veiculo
 import com.raffastudioproducoes.minharota.domain.model.Corrida
+import com.raffastudioproducoes.minharota.domain.model.ContaDiaria
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.util.UUID
@@ -187,6 +188,25 @@ class SharedPreferencesManager(context: Context) {
         return sharedPreferences.getBoolean(KEY_IS_PRO, false)
     }
 
+    // --- Conta Diária ---
+    fun salvarContasDiarias(lista: List<ContaDiaria>) {
+        val jsonString = json.encodeToString(lista)
+        sharedPreferences.edit().putString(KEY_CONTAS_DIARIAS, jsonString).apply()
+    }
+
+    fun obterContasDiarias(): List<ContaDiaria> {
+        val jsonString = sharedPreferences.getString(KEY_CONTAS_DIARIAS, null)
+        return if (jsonString != null) {
+            try {
+                json.decodeFromString(jsonString)
+            } catch (e: Exception) {
+                emptyList()
+            }
+        } else {
+            emptyList()
+        }
+    }
+
     companion object {
         private const val KEY_CAIXINHAS = "caixinhas"
         private const val KEY_TURNOS = "turnos"
@@ -199,5 +219,6 @@ class SharedPreferencesManager(context: Context) {
         private const val KEY_DATA_ANIVERSARIO = "data_aniversario"
         private const val KEY_FOTO_PERFIL = "foto_perfil"
         private const val KEY_IS_PRO = "is_pro"
+        private const val KEY_CONTAS_DIARIAS = "contas_diarias"
     }
 }

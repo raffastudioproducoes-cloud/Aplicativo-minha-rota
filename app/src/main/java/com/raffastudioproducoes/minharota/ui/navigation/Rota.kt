@@ -20,6 +20,7 @@ sealed class Rota(val route: String, val title: String, val icon: ImageVector) {
     object Garagem : Rota("garagem", "Garagem", Icons.Outlined.TwoWheeler)
     object Extrato : Rota("extrato", "Extrato", Icons.Outlined.ReceiptLong)
     object Dividas : Rota("dividas", "Dívidas", Icons.Outlined.MoneyOff)
+    object ContaDiaria : Rota("contadiaria", "Conta Diária", Icons.Outlined.AccountBalanceWallet)
     object Perfil : Rota("perfil", "Perfil", Icons.Outlined.Person)
     object Configuracoes : Rota("configuracoes", "Configurações", Icons.Outlined.Settings)
 }

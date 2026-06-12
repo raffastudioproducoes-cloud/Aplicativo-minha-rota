@@ -9,8 +9,8 @@
 9        android:targetSdkVersion="34" />
 10
 11    <uses-permission android:name="android.permission.INTERNET" />
-11-->/home/ubuntu/Aplicativo-Minha-Rota/app/src/main/AndroidManifest.xml:4:5-67
-11-->/home/ubuntu/Aplicativo-Minha-Rota/app/src/main/AndroidManifest.xml:4:22-64
+11-->/home/ubuntu/minha-rota-repo/app/src/main/AndroidManifest.xml:4:5-67
+11-->/home/ubuntu/minha-rota-repo/app/src/main/AndroidManifest.xml:4:22-64
 12
 13    <permission
 13-->[androidx.core:core:1.12.0] /home/ubuntu/.gradle/caches/transforms-3/f91842984bce425d81dce9e5af0ace7a/transformed/core-1.12.0/AndroidManifest.xml:22:5-24:47
@@ -24,42 +24,42 @@
 17-->[androidx.core:core:1.12.0] /home/ubuntu/.gradle/caches/transforms-3/f91842984bce425d81dce9e5af0ace7a/transformed/core-1.12.0/AndroidManifest.xml:26:22-94
 18
 19    <application
-19-->/home/ubuntu/Aplicativo-Minha-Rota/app/src/main/AndroidManifest.xml:6:5-23:19
+19-->/home/ubuntu/minha-rota-repo/app/src/main/AndroidManifest.xml:6:5-23:19
 20        android:name="com.raffastudioproducoes.minharota.MinhaRotaApp"
-20-->/home/ubuntu/Aplicativo-Minha-Rota/app/src/main/AndroidManifest.xml:7:9-37
+20-->/home/ubuntu/minha-rota-repo/app/src/main/AndroidManifest.xml:7:9-37
 21        android:allowBackup="true"
-21-->/home/ubuntu/Aplicativo-Minha-Rota/app/src/main/AndroidManifest.xml:8:9-35
+21-->/home/ubuntu/minha-rota-repo/app/src/main/AndroidManifest.xml:8:9-35
 22        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
 22-->[androidx.core:core:1.12.0] /home/ubuntu/.gradle/caches/transforms-3/f91842984bce425d81dce9e5af0ace7a/transformed/core-1.12.0/AndroidManifest.xml:28:18-86
 23        android:debuggable="true"
 24        android:extractNativeLibs="false"
 25        android:icon="@mipmap/ic_launcher"
-25-->/home/ubuntu/Aplicativo-Minha-Rota/app/src/main/AndroidManifest.xml:9:9-43
+25-->/home/ubuntu/minha-rota-repo/app/src/main/AndroidManifest.xml:9:9-43
 26        android:label="Minha Rota"
-26-->/home/ubuntu/Aplicativo-Minha-Rota/app/src/main/AndroidManifest.xml:10:9-35
+26-->/home/ubuntu/minha-rota-repo/app/src/main/AndroidManifest.xml:10:9-35
 27        android:roundIcon="@mipmap/ic_launcher_round"
-27-->/home/ubuntu/Aplicativo-Minha-Rota/app/src/main/AndroidManifest.xml:11:9-54
+27-->/home/ubuntu/minha-rota-repo/app/src/main/AndroidManifest.xml:11:9-54
 28        android:supportsRtl="true"
-28-->/home/ubuntu/Aplicativo-Minha-Rota/app/src/main/AndroidManifest.xml:12:9-35
+28-->/home/ubuntu/minha-rota-repo/app/src/main/AndroidManifest.xml:12:9-35
 29        android:theme="@android:style/Theme.Material.Light.NoActionBar" >
-29-->/home/ubuntu/Aplicativo-Minha-Rota/app/src/main/AndroidManifest.xml:13:9-72
+29-->/home/ubuntu/minha-rota-repo/app/src/main/AndroidManifest.xml:13:9-72
 30        <activity
-30-->/home/ubuntu/Aplicativo-Minha-Rota/app/src/main/AndroidManifest.xml:14:9-22:20
+30-->/home/ubuntu/minha-rota-repo/app/src/main/AndroidManifest.xml:14:9-22:20
 31            android:name="com.raffastudioproducoes.minharota.MainActivity"
-31-->/home/ubuntu/Aplicativo-Minha-Rota/app/src/main/AndroidManifest.xml:15:13-41
+31-->/home/ubuntu/minha-rota-repo/app/src/main/AndroidManifest.xml:15:13-41
 32            android:exported="true"
-32-->/home/ubuntu/Aplicativo-Minha-Rota/app/src/main/AndroidManifest.xml:16:13-36
+32-->/home/ubuntu/minha-rota-repo/app/src/main/AndroidManifest.xml:16:13-36
 33            android:theme="@android:style/Theme.Material.Light.NoActionBar" >
-33-->/home/ubuntu/Aplicativo-Minha-Rota/app/src/main/AndroidManifest.xml:17:13-76
+33-->/home/ubuntu/minha-rota-repo/app/src/main/AndroidManifest.xml:17:13-76
 34            <intent-filter>
-34-->/home/ubuntu/Aplicativo-Minha-Rota/app/src/main/AndroidManifest.xml:18:13-21:29
+34-->/home/ubuntu/minha-rota-repo/app/src/main/AndroidManifest.xml:18:13-21:29
 35                <action android:name="android.intent.action.MAIN" />
-35-->/home/ubuntu/Aplicativo-Minha-Rota/app/src/main/AndroidManifest.xml:19:17-69
-35-->/home/ubuntu/Aplicativo-Minha-Rota/app/src/main/AndroidManifest.xml:19:25-66
+35-->/home/ubuntu/minha-rota-repo/app/src/main/AndroidManifest.xml:19:17-69
+35-->/home/ubuntu/minha-rota-repo/app/src/main/AndroidManifest.xml:19:25-66
 36
 37                <category android:name="android.intent.category.LAUNCHER" />
-37-->/home/ubuntu/Aplicativo-Minha-Rota/app/src/main/AndroidManifest.xml:20:17-77
-37-->/home/ubuntu/Aplicativo-Minha-Rota/app/src/main/AndroidManifest.xml:20:27-74
+37-->/home/ubuntu/minha-rota-repo/app/src/main/AndroidManifest.xml:20:17-77
+37-->/home/ubuntu/minha-rota-repo/app/src/main/AndroidManifest.xml:20:27-74
 38            </intent-filter>
 39        </activity>
 40

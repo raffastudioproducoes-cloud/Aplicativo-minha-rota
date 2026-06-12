@@ -112,6 +112,28 @@ fun DrawerConteudoGradient(navController: NavController, onClose: () -> Unit) {
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
+            text = "Premium",
+            style = MaterialTheme.typography.labelLarge,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+        )
+
+        // Item Premium: Conta Diária
+        DrawerItemGradient(
+            Icons.Rounded.AccountBalanceWallet,
+            "⭐ Conta Diária",
+            Brush.linearGradient(listOf(Color(0xFF10B981), Color(0xFF059669)))
+        ) {
+            navController.navigate(Rota.ContaDiaria.route) {
+                popUpTo(navController.graph.startDestinationId) { saveState = true }
+                launchSingleTop = true
+                restoreState = true
+            }
+            onClose()
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(
             text = "Outros",
             style = MaterialTheme.typography.labelLarge,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
