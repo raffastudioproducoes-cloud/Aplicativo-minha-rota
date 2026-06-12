@@ -120,6 +120,9 @@ fun ScaffoldPrincipalPush(
                     .matchParentSize()
                     .background(Color.Black.copy(alpha = 0.32f))
                     .offset(x = drawerOffsetPx)
+                    .clickable {
+                        scope.launch { drawerState.close() }
+                    }
             )
         }
 
