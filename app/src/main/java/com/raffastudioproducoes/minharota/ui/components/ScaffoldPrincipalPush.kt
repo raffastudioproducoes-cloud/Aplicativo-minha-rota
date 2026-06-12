@@ -21,8 +21,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.compose.ui.platform.LocalContext
 import com.raffastudioproducoes.minharota.ui.screens.hoje.HojeViewModel
 import com.raffastudioproducoes.minharota.ui.theme.FundoDark
+import com.raffastudioproducoes.minharota.data.local.SharedPreferencesManager
 import kotlinx.coroutines.launch
 
 @Composable
@@ -55,11 +57,14 @@ fun ScaffoldPrincipalPush(
                 .offset(x = -(280.dp - drawerOffsetPx))
                 .background(FundoDark)
         ) {
-            DrawerConteudoGradientRainbow(
+            val context = LocalContext.current
+            val prefsManager = SharedPreferencesManager(context)
+            DrawerConteudoGradientRainbowV2(
                 navController = navController,
                 onClose = {
                     scope.launch { drawerState.close() }
-                }
+                },
+                prefsManager = prefsManager
             )
         }
 
@@ -72,7 +77,7 @@ fun ScaffoldPrincipalPush(
             Scaffold(
                 topBar = {
                     if (!isRidingMode) {
-                        HeaderSuperior(onDrawerClick = { scope.launch { drawerState.open() } })
+                        HeaderSuperior(onDrawerClick = { scope.launch { drawerState.open() } }, drawerState = drawerState)
                     }
                 },
                 bottomBar = {

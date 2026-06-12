@@ -25,9 +25,13 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material3.DrawerState
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HeaderSuperior(onDrawerClick: () -> Unit) {
+fun HeaderSuperior(onDrawerClick: () -> Unit, drawerState: DrawerState? = null) {
     TopAppBar(
         title = {
             Row(
@@ -58,7 +62,11 @@ fun HeaderSuperior(onDrawerClick: () -> Unit) {
         },
         navigationIcon = {
             IconButton(onClick = onDrawerClick) {
-                MenuIconTwoLines()
+                if (drawerState?.isOpen == true) {
+                    Icon(Icons.Rounded.Close, contentDescription = "Fechar Menu")
+                } else {
+                    MenuIconTwoLines()
+                }
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
