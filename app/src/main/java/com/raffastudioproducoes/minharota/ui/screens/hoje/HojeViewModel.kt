@@ -79,12 +79,14 @@ class HojeViewModel : ViewModel() {
     }
 
     fun adicionarGanhoRapido(valor: Double) {
+        if (valor <= 0) return
+
         // Registrar na lista visual da tela Hoje
         val agora = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
         val ganho = GanhoRapido(horario = agora, valor = valor)
         _ganhosRapidos.value = _ganhosRapidos.value + ganho
 
-        // Registrar na lista de persistência do Turno
+        // Registrar na lista de persistência do Turno (Corrida)
         val novaCorrida = Corrida(
             id = UUID.randomUUID().toString(),
             valor = valor,
@@ -92,10 +94,15 @@ class HojeViewModel : ViewModel() {
         )
         _corridasAtuais.value = _corridasAtuais.value + novaCorrida
         
-        // Atualizar valores totais
+        // Atualizar valores totais acumulados
         _ganhoBruto.value += valor
         calcularLiquido()
         calcularHorasTrabalhadas()
+    }
+
+    // Função unificada para registrar ganho vindo do modal ou riding mode
+    fun registrarGanhoRapido(valor: Double) {
+        adicionarGanhoRapido(valor)
     }
 
     fun salvarTurno(context: Context, onSuccess: () -> Unit) {

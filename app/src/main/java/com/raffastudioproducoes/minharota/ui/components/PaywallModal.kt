@@ -74,7 +74,7 @@ fun PaywallModal(onDismiss: () -> Unit, onUpgrade: () -> Unit) {
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
                 Text(
-                    text = "R$ 14,90/mês",
+                    text = "R$ 9,99/mês",
                     fontSize = 42.sp,
                     fontWeight = FontWeight.ExtraBold,
                     color = VerdeEntrada,
@@ -87,8 +87,8 @@ fun PaywallModal(onDismiss: () -> Unit, onUpgrade: () -> Unit) {
                         .fillMaxWidth()
                         .padding(bottom = 24.dp)
                 ) {
+                    BenefitItem(text = "Conta Diária Inteligente", icon = Icons.Rounded.CheckCircle)
                     BenefitItem(text = "Caixinhas Ilimitadas", icon = Icons.Rounded.CheckCircle)
-                    BenefitItem(text = "Rendimento Simulado", icon = Icons.Rounded.CheckCircle)
                     BenefitItem(text = "Analytics Avançados", icon = Icons.Rounded.CheckCircle)
                     BenefitItem(text = "Suporte Prioritário", icon = Icons.Rounded.CheckCircle)
                 }

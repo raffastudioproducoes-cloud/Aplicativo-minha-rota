@@ -33,6 +33,8 @@ fun HojeScreen(viewModel: HojeViewModel = viewModel()) {
     val isRidingMode by viewModel.isRidingMode.collectAsState()
     val ganhosRapidos by viewModel.ganhosRapidos.collectAsState()
 
+    var mostrarModalRapido by remember { mutableStateOf(false) }
+
     if (isRidingMode) {
         Box(
             modifier = Modifier
@@ -49,19 +51,29 @@ fun HojeScreen(viewModel: HojeViewModel = viewModel()) {
                 )
                 Spacer(modifier = Modifier.height(32.dp))
                 Button(
-                    onClick = { viewModel.adicionarGanhoRapido(5.0) },
+                    onClick = { mostrarModalRapido = true },
                     modifier = Modifier
                         .fillMaxWidth(0.9f)
                         .height(64.dp),
                     shape = RoundedCornerShape(16.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = VerdeEntrada)
                 ) {
-                    Text("Ganho Rápido (R$ 5,00)", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color.Black)
+                    Text("Ganho Rápido", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color.Black)
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 TextButton(onClick = { viewModel.toggleRidingMode() }) {
                     Text("Sair do Modo Riding", color = Color.White.copy(alpha = 0.7f))
                 }
+            }
+
+            if (mostrarModalRapido) {
+                com.raffastudioproducoes.minharota.ui.components.ModalRegistroRapido(
+                    onDismiss = { mostrarModalRapido = false },
+                    onSave = { valor ->
+                        viewModel.registrarGanhoRapido(valor)
+                        mostrarModalRapido = false
+                    }
+                )
             }
         }
     } else {

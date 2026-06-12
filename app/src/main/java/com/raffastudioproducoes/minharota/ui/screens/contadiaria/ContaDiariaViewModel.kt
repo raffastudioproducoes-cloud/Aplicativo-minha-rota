@@ -32,6 +32,8 @@ class ContaDiariaViewModel(application: Application) : AndroidViewModel(applicat
     }
 
     fun adicionarConta(descricao: String, valor: Double, frequencia: String) {
+        if (descricao.isBlank() || valor <= 0) return
+        
         val novaConta = ContaDiaria(
             id = UUID.randomUUID().toString(),
             descricao = descricao,
@@ -53,18 +55,18 @@ class ContaDiariaViewModel(application: Application) : AndroidViewModel(applicat
     }
 
     private fun calcularMetaDiaria() {
-        var totalMensal = 0.0
+        var totalDiario = 0.0
 
         for (conta in _contasDiarias.value) {
-            totalMensal += when (conta.frequencia) {
-                "Diario" -> conta.valor * 30
-                "Semanal" -> (conta.valor * 4.3)
-                "Quinzenal" -> (conta.valor * 2)
-                "Mensal" -> conta.valor
+            totalDiario += when (conta.frequencia) {
+                "Diário" -> conta.valor
+                "Semanal" -> conta.valor / 7.0
+                "Quinzenal" -> conta.valor / 15.0
+                "Mensal" -> conta.valor / 30.0
                 else -> 0.0
             }
         }
 
-        _metaDiaria.value = if (totalMensal > 0) totalMensal / 30 else 0.0
+        _metaDiaria.value = totalDiario
     }
 }

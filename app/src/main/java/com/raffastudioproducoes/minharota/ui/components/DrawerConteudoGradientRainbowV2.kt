@@ -101,7 +101,7 @@ fun DrawerConteudoGradientRainbowV2(
             Spacer(modifier = Modifier.height(8.dp))
 
             // Tag de Assinatura (PRO/FREE)
-            val isPro = prefsManager.obterBoolean("is_pro", false)
+            val isPro = prefsManager.obterIsPro()
             Box(
                 modifier = Modifier
                     .background(
