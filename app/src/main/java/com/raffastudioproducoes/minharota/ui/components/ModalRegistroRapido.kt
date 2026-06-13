@@ -14,11 +14,12 @@ import androidx.compose.ui.unit.sp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ModalRegistroRapido(
+    valorInicial: Double = 0.0,
     onDismiss: () -> Unit,
     onSave: (Double) -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState()
-    var valorInput by remember { mutableStateOf("") }
+    var valorInput by remember { mutableStateOf(if (valorInicial > 0) String.format("%.2f", valorInicial) else "") }
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
@@ -59,7 +60,7 @@ fun ModalRegistroRapido(
 
             Button(
                 onClick = {
-                    val valor = valorInput.toDoubleOrNull() ?: 0.0
+                    val valor = valorInput.replace(",", ".").toDoubleOrNull() ?: 0.0
                     onSave(valor)
                     onDismiss()
                 },

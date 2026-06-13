@@ -12,18 +12,8 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.CheckCircle
-import androidx.compose.material.icons.rounded.CreditCard
-import androidx.compose.material.icons.rounded.QrCode
-import androidx.compose.material.icons.rounded.ReceiptLong
-import androidx.compose.material.icons.rounded.ShoppingCart
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
+import androidx.compose.material.icons.rounded.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,20 +23,9 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import com.raffastudioproducoes.minharota.ui.theme.CyanBright
-import com.raffastudioproducoes.minharota.ui.theme.ElectricBlue
-import com.raffastudioproducoes.minharota.ui.theme.FundoDark
-import com.raffastudioproducoes.minharota.ui.theme.GlassDark
-import com.raffastudioproducoes.minharota.ui.theme.HaloBlue
-import com.raffastudioproducoes.minharota.ui.theme.OrangeWarm
-import com.raffastudioproducoes.minharota.ui.theme.PinkVibrant
-import com.raffastudioproducoes.minharota.ui.theme.RoxoPrimary
-import com.raffastudioproducoes.minharota.ui.theme.TealAccent
-import com.raffastudioproducoes.minharota.ui.theme.VerdeEntrada
 
 @Composable
 fun PaywallModal(onDismiss: () -> Unit, onUpgrade: () -> Unit) {
@@ -54,15 +33,21 @@ fun PaywallModal(onDismiss: () -> Unit, onUpgrade: () -> Unit) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.Black.copy(alpha = 0.6f))
-                .blur(16.dp),
-            contentAlignment = Alignment.Center
+                .background(Color.Black.copy(alpha = 0.4f))
         ) {
+            // Efeito de Glassmorphism (Blur) no fundo
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .blur(16.dp)
+            )
+
             Column(
                 modifier = Modifier
+                    .align(Alignment.Center)
                     .fillMaxWidth(0.9f)
                     .clip(RoundedCornerShape(24.dp))
-                    .background(FundoDark)
+                    .background(Color(0xFF121214))
                     .padding(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -77,23 +62,23 @@ fun PaywallModal(onDismiss: () -> Unit, onUpgrade: () -> Unit) {
                     text = "R$ 9,99/mês",
                     fontSize = 42.sp,
                     fontWeight = FontWeight.ExtraBold,
-                    color = VerdeEntrada,
+                    color = Color(0xFF10B981),
                     modifier = Modifier.padding(bottom = 24.dp)
                 )
 
-                // Tabela de Benefícios
+                // Benefícios
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 24.dp)
                 ) {
-                    BenefitItem(text = "Conta Diária Inteligente", icon = Icons.Rounded.CheckCircle)
-                    BenefitItem(text = "Caixinhas Ilimitadas", icon = Icons.Rounded.CheckCircle)
-                    BenefitItem(text = "Analytics Avançados", icon = Icons.Rounded.CheckCircle)
-                    BenefitItem(text = "Suporte Prioritário", icon = Icons.Rounded.CheckCircle)
+                    BenefitItem("Caixinhas Ilimitadas")
+                    BenefitItem("OCR Nativo de Ganhos")
+                    BenefitItem("Tracker de Eficiência (Km/L)")
+                    BenefitItem("Sem Anúncios")
                 }
 
-                // Cards de Métodos de Pagamento
+                // Seletor de Pagamento
                 PaymentMethodSelector()
 
                 Spacer(modifier = Modifier.height(24.dp))
@@ -104,13 +89,13 @@ fun PaywallModal(onDismiss: () -> Unit, onUpgrade: () -> Unit) {
                         .fillMaxWidth()
                         .height(56.dp),
                     shape = RoundedCornerShape(16.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = VerdeEntrada)
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF10B981))
                 ) {
                     Text("Assinar Agora", color = Color.Black, fontSize = 18.sp, fontWeight = FontWeight.Bold)
                 }
-                Spacer(modifier = Modifier.height(12.dp))
+                
                 TextButton(onClick = onDismiss) {
-                    Text("Agora não", color = Color.White.copy(alpha = 0.7f))
+                    Text("Agora não", color = Color.White.copy(alpha = 0.6f))
                 }
             }
         }
@@ -118,37 +103,26 @@ fun PaywallModal(onDismiss: () -> Unit, onUpgrade: () -> Unit) {
 }
 
 @Composable
-fun BenefitItem(text: String, icon: ImageVector) {
+fun BenefitItem(text: String) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp),
+        modifier = Modifier.padding(vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = null,
-            tint = VerdeEntrada,
-            modifier = Modifier.size(24.dp)
-        )
-        Spacer(modifier = Modifier.width(16.dp))
-        Text(
-            text = text,
-            color = Color.White,
-            fontSize = 16.sp
-        )
+        Icon(Icons.Rounded.CheckCircle, contentDescription = null, tint = Color(0xFF10B981), modifier = Modifier.size(20.dp))
+        Spacer(modifier = Modifier.width(12.dp))
+        Text(text = text, color = Color.White, fontSize = 14.sp)
     }
 }
 
 @Composable
 fun PaymentMethodSelector() {
-    val paymentMethods = listOf(
-        PaymentMethod("PIX", Icons.Rounded.QrCode, listOf(TealAccent, CyanBright)),
-        PaymentMethod("Cartão", Icons.Rounded.CreditCard, listOf(PinkVibrant, RoxoPrimary)),
-        PaymentMethod("Google Pay", Icons.Rounded.ShoppingCart, listOf(VerdeEntrada, ElectricBlue)),
-        PaymentMethod("Boleto", Icons.Rounded.ReceiptLong, listOf(OrangeWarm, Color.Yellow))
+    val methods = listOf(
+        Pair("PIX", Icons.Rounded.QrCode),
+        Pair("Cartão", Icons.Rounded.CreditCard),
+        Pair("G Pay", Icons.Rounded.AccountBalanceWallet),
+        Pair("Boleto", Icons.Rounded.ReceiptLong)
     )
-    var selectedMethod by remember { mutableStateOf<PaymentMethod?>(null) }
+    var selected by remember { mutableStateOf("PIX") }
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
@@ -156,54 +130,35 @@ fun PaymentMethodSelector() {
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        items(paymentMethods) { method ->
-            val isSelected = selectedMethod == method
+        items(methods) { (name, icon) ->
+            val isSelected = selected == name
             val borderColor by animateColorAsState(
-                targetValue = if (isSelected) method.gradientColors.last() else Color.Transparent,
-                animationSpec = tween(300),
-                label = "borderColorAnimation"
-            )
-            val backgroundColor by animateColorAsState(
-                targetValue = if (isSelected) method.gradientColors.first().copy(alpha = 0.2f) else FundoDark.copy(alpha = 0.5f),
-                animationSpec = tween(300),
-                label = "backgroundColorAnimation"
-            )
-            val borderWidth by animateDpAsState(
-                targetValue = if (isSelected) 2.dp else 0.dp,
-                animationSpec = tween(300),
-                label = "borderWidthAnimation"
+                if (isSelected) Color(0xFF10B981) else Color.White.copy(alpha = 0.1f)
             )
 
-            Column(
+            Box(
                 modifier = Modifier
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(backgroundColor)
-                    .border(borderWidth, borderColor, RoundedCornerShape(16.dp))
-                    .clickable { selectedMethod = method }
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(if (isSelected) Color(0xFF10B981).copy(alpha = 0.1f) else Color.Transparent)
+                    .border(
+                        width = if (isSelected) 2.dp else 1.dp,
+                        brush = if (isSelected) {
+                            Brush.sweepGradient(listOf(Color(0xFF3B82F6), Color(0xFF10B981), Color(0xFF3B82F6)))
+                        } else {
+                            Brush.linearGradient(listOf(borderColor, borderColor))
+                        },
+                        shape = RoundedCornerShape(12.dp)
+                    )
+                    .clickable { selected = name }
                     .padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+                contentAlignment = Alignment.Center
             ) {
-                Icon(
-                    imageVector = method.icon,
-                    contentDescription = method.name,
-                    tint = if (isSelected) method.gradientColors.last() else Color.White.copy(alpha = 0.7f),
-                    modifier = Modifier.size(36.dp)
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = method.name,
-                    color = if (isSelected) method.gradientColors.last() else Color.White,
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 14.sp
-                )
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Icon(icon, contentDescription = null, tint = if (isSelected) Color(0xFF10B981) else Color.White)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(text = name, color = Color.White, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                }
             }
         }
     }
 }
-
-data class PaymentMethod(
-    val name: String,
-    val icon: ImageVector,
-    val gradientColors: List<Color>
-)

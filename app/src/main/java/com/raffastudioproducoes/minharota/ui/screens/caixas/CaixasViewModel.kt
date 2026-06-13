@@ -42,16 +42,13 @@ class CaixasViewModel : ViewModel() {
         }
     }
 
-    fun validarPercentuais(novaCaixinha: Caixinha): Boolean {
-        val somaAtual = _caixinhas.value.sumOf { it.percentual }
-        return (somaAtual + novaCaixinha.percentual) <= 100.0
-    }
-
     fun adicionarCaixinha(context: Context, caixinha: Caixinha, onSuccess: () -> Unit) {
+        // Trava PRO: Máximo de 3 caixinhas para usuários FREE
         if (!_isPro.value && _caixinhas.value.size >= 3) {
             _showPaywallModal.value = true
             return
         }
+        
         val prefs = SharedPreferencesManager(context)
         val listaAtual = _caixinhas.value.toMutableList()
         listaAtual.add(caixinha.copy(id = UUID.randomUUID().toString()))

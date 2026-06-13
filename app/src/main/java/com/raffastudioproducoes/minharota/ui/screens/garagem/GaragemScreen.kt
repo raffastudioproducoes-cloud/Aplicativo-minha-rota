@@ -1,145 +1,134 @@
 package com.raffastudioproducoes.minharota.ui.screens.garagem
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Build
+import androidx.compose.material.icons.outlined.LocalGasStation
+import androidx.compose.material.icons.outlined.Motorcycle
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.draw.blur
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.raffastudioproducoes.minharota.domain.model.Veiculo
 
 @Composable
 fun GaragemScreen(viewModel: GaragemViewModel = viewModel()) {
-    val context = LocalContext.current
-    val veiculo by viewModel.veiculo.collectAsState()
+    val kmRodados by viewModel.kmRodados.collectAsState()
+    val litrosAbastecidos by viewModel.litrosAbastecidos.collectAsState()
+    val mediaKmL by viewModel.mediaResult.collectAsState()
 
-    var kmAtualInput by remember { mutableStateOf("") }
-
-    LaunchedEffect(Unit) {
-        viewModel.carregarVeiculo(context)
-    }
-
-    LaunchedEffect(veiculo) {
-        veiculo?.quilometragemAtual?.let { kmAtualInput = it.toString() }
-    }
-
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFF121214))
+            .padding(24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Text(
-            text = "Minha Garagem",
+            text = "Eficiência da Moto",
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(16.dp)
+            color = Color.White,
+            modifier = Modifier.padding(bottom = 24.dp)
         )
 
-        // Card de Quilometragem
-        Card(
+        // Card Mestre de Desempenho (Glassmorphism)
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+                .height(200.dp)
+                .clip(RoundedCornerShape(24.dp))
+                .background(Color.White.copy(alpha = 0.05f))
+                .border(1.dp, Color.White.copy(alpha = 0.1f), RoundedCornerShape(24.dp))
         ) {
-            Column(modifier = Modifier.padding(16.dp)) {
+            // Efeito de Blur no fundo do card
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .blur(16.dp)
+            )
+
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
                 Text(
-                    text = "Quilometragem Atual",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                    text = "Média Atual",
+                    color = Color.White.copy(alpha = 0.6f),
+                    fontSize = 14.sp
                 )
-                Spacer(modifier = Modifier.height(12.dp))
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    OutlinedTextField(
-                        value = kmAtualInput,
-                        onValueChange = { kmAtualInput = it },
-                        modifier = Modifier.weight(1f),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                        singleLine = true,
-                        suffix = { Text("KM") }
-                    )
-                    Button(onClick = {
-                        kmAtualInput.toDoubleOrNull()?.let { newKm ->
-                            viewModel.atualizarQuilometragem(context, newKm)
-                        }
-                    }) {
-                        Text("Atualizar")
-                    }
-                }
+                Text(
+                    text = "${String.format("%.1f", mediaKmL)} Km/L",
+                    fontSize = 48.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    color = if (mediaKmL > 0) Color(0xFF10B981) else Color(0xFF3B82F6)
+                )
             }
         }
 
-        Text(
-            text = "Alertas de Manutenção",
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+        Spacer(modifier = Modifier.height(32.dp))
+
+        // Inputs de Abastecimento
+        EfficiencyInput(
+            label = "Quilômetros Rodados",
+            value = kmRodados,
+            onValueChange = { viewModel.updateKm(it) },
+            icon = Icons.Outlined.Motorcycle,
+            suffix = "KM"
         )
 
-        LazyColumn(
-            modifier = Modifier.weight(1f),
-            contentPadding = PaddingValues(bottom = 16.dp)
-        ) {
-            veiculo?.manutencoes?.let { manutencoes ->
-                items(manutencoes) { manutencao ->
-                    val kmRestante = (manutencao.proximoServicoKm - (veiculo?.quilometragemAtual ?: 0.0)).toInt()
-                    val cardColor = when {
-                        kmRestante <= 0 -> MaterialTheme.colorScheme.error.copy(alpha = 0.3f) // Crítico
-                        kmRestante < 100 -> MaterialTheme.colorScheme.tertiary.copy(alpha = 0.3f) // Alerta (Amarelo)
-                        else -> MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
-                    }
-                    val textColor = when {
-                        kmRestante <= 0 -> MaterialTheme.colorScheme.error
-                        kmRestante < 100 -> MaterialTheme.colorScheme.tertiary
-                        else -> MaterialTheme.colorScheme.onSurface
-                    }
+        Spacer(modifier = Modifier.height(16.dp))
 
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 4.dp, horizontal = 16.dp),
-                        colors = CardDefaults.cardColors(containerColor = cardColor)
-                    ) {
-                        Row(
-                            modifier = Modifier.padding(16.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(
-                                imageVector = Icons.Rounded.Build,
-                                contentDescription = null,
-                                modifier = Modifier.size(24.dp),
-                                tint = textColor
-                            )
-                            Spacer(modifier = Modifier.width(16.dp))
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(text = manutencao.tipo, fontWeight = FontWeight.Bold)
-                                Text(
-                                    text = if (kmRestante <= 0) "Vencido!" else "Faltam ${kmRestante} km",
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = textColor
-                                )
-                            }
-                            Button(onClick = { /* TODO: Implementar registro de manutenção */ }) {
-                                Text("Registrar")
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        EfficiencyInput(
+            label = "Litros Abastecidos",
+            value = litrosAbastecidos,
+            onValueChange = { viewModel.updateLitros(it) },
+            icon = Icons.Outlined.LocalGasStation,
+            suffix = "L"
+        )
     }
+}
+
+@Composable
+fun EfficiencyInput(
+    label: String,
+    value: String,
+    onValueChange: (String) -> Unit,
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    suffix: String
+) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(50.dp)),
+        label = { Text(label, color = Color.Gray) },
+        leadingIcon = { Icon(icon, contentDescription = null, tint = Color.Gray) },
+        suffix = { Text(suffix, color = Color.Gray) },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+        singleLine = true,
+        shape = RoundedCornerShape(50.dp),
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedBorderColor = Color(0xFF3B82F6),
+            unfocusedBorderColor = Color.White.copy(alpha = 0.1f),
+            focusedTextColor = Color.White,
+            unfocusedTextColor = Color.White,
+            cursorColor = Color(0xFF3B82F6)
+        )
+    )
 }
