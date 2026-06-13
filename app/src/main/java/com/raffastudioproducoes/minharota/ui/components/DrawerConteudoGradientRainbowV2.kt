@@ -1,6 +1,5 @@
 package com.raffastudioproducoes.minharota.ui.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -17,20 +16,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.raffastudioproducoes.minharota.R
 import com.raffastudioproducoes.minharota.data.local.SharedPreferencesManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 /**
- * IMPLEMENTAÇÃO REESTRUTURADA DO MENU DRAWER.
- * Categorias: CONTA, NAVEGAÇÃO PRINCIPAL, MAIS, SUPORTE, SOBRE.
- * Seção de Aparência removida.
+ * IMPLEMENTAÇÃO CORRIGIDA DO MENU DRAWER.
+ * Resolve erros de compilação, remove seção de aparência e usa ícones nativos.
  */
 @Composable
 fun DrawerConteudoGradientRainbowV2(
@@ -40,9 +36,9 @@ fun DrawerConteudoGradientRainbowV2(
     currentRoute: String,
     sharedPreferencesManager: SharedPreferencesManager
 ) {
+    val context = LocalContext.current
     val isPro = sharedPreferencesManager.obterIsPro()
     val nomeUsuario = sharedPreferencesManager.obterNomeUsuario()
-    val fotoUrl = sharedPreferencesManager.getString("foto_perfil_url", "")
     val scrollState = rememberScrollState()
 
     Column(
@@ -92,23 +88,15 @@ fun DrawerConteudoGradientRainbowV2(
                             onNavigate("perfil")
                         }
                 ) {
-                    if (!fotoUrl.isNullOrEmpty()) {
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_placeholder_avatar),
-                            contentDescription = "Foto de Perfil",
-                            modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Crop
-                        )
-                    } else {
-                        Icon(
-                            imageVector = Icons.Rounded.Person,
-                            contentDescription = "Avatar",
-                            tint = Color(0xFF3B82F6),
-                            modifier = Modifier
-                                .size(48.dp)
-                                .align(Alignment.Center)
-                        )
-                    }
+                    // Usando ícone nativo para evitar erro de drawable inexistente
+                    Icon(
+                        imageVector = Icons.Rounded.Person,
+                        contentDescription = "Avatar",
+                        tint = Color(0xFF3B82F6),
+                        modifier = Modifier
+                            .size(48.dp)
+                            .align(Alignment.Center)
+                    )
                 }
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -235,7 +223,8 @@ fun DrawerConteudoGradientRainbowV2(
                 isSelected = false,
                 gradientColors = listOf(Color(0xFF3B82F6), Color.Transparent),
                 onClick = {
-                    // TODO: Ação de ajuda
+                    scope.launch { drawerState.close() }
+                    // Ação de ajuda
                 }
             )
             DrawerItemPill(
@@ -244,7 +233,8 @@ fun DrawerConteudoGradientRainbowV2(
                 isSelected = false,
                 gradientColors = listOf(Color(0xFF10B981), Color.Transparent),
                 onClick = {
-                    // TODO: Ação de feedback
+                    scope.launch { drawerState.close() }
+                    // Ação de feedback
                 }
             )
 

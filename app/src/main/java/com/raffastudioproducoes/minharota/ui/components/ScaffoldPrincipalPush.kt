@@ -2,6 +2,7 @@ package com.raffastudioproducoes.minharota.ui.components
 
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.offset
@@ -75,15 +76,16 @@ fun ScaffoldPrincipalPush(
         }
 
         // Conteúdo Principal (Deslocado) com Canto Arredondado Dinâmico (Cima e Baixo)
+        // Usando a assinatura posicional clássica para evitar erros de compilação
         Box(
             modifier = Modifier
                 .offset(x = drawerOffsetPx)
                 .clip(
                     RoundedCornerShape(
-                        topStart = cornerRadius,
-                        bottomStart = cornerRadius,
-                        topEnd = 0.dp,
-                        bottomEnd = 0.dp
+                        cornerRadius, // topStart
+                        0.dp,        // topEnd
+                        0.dp,        // bottomEnd
+                        cornerRadius // bottomStart
                     )
                 )
         ) {
