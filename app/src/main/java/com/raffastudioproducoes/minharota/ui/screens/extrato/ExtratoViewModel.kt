@@ -16,24 +16,60 @@ import java.util.Locale
 
 class ExtratoViewModel : ViewModel() {
 
+    private val _todasMovimentacoes = MutableStateFlow<List<Movimentacao>>(emptyList())
     private val _movimentacoes = MutableStateFlow<List<Movimentacao>>(emptyList())
     val movimentacoes: StateFlow<List<Movimentacao>> = _movimentacoes.asStateFlow()
 
     private val _filtroSelecionado = MutableStateFlow("Todos")
     val filtroSelecionado: StateFlow<String> = _filtroSelecionado.asStateFlow()
 
+    private val _totalEntradas = MutableStateFlow(0.0)
+    val totalEntradas: StateFlow<Double> = _totalEntradas.asStateFlow()
+
+    private val _totalSaidas = MutableStateFlow(0.0)
+    val totalSaidas: StateFlow<Double> = _totalSaidas.asStateFlow()
+
+    private val _saldoTotal = MutableStateFlow(0.0)
+    val saldoTotal: StateFlow<Double> = _saldoTotal.asStateFlow()
+
     fun carregarMovimentacoes(context: Context) {
         viewModelScope.launch {
             val prefs = SharedPreferencesManager(context)
             val todasMovimentacoes = prefs.obterMovimentacoes()
-            _movimentacoes.value = todasMovimentacoes.sortedByDescending { SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse(it.data) }
+            _todasMovimentacoes.value = todasMovimentacoes.sortedByDescending { SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse(it.data) }
+            atualizarMovimentacoesFiltradas()
+            calcularTotais()
         }
     }
 
     fun aplicarFiltro(filtro: String) {
         _filtroSelecionado.value = filtro
-        // TODO: Implementar lógica de filtragem por data
+        atualizarMovimentacoesFiltradas()
     }
 
-    // TODO: Adicionar cálculo de saldo, entradas e saídas
+    private fun atualizarMovimentacoesFiltradas() {
+        val filtro = _filtroSelecionado.value
+        val movimentacoesFiltradas = when (filtro) {
+            "Entrada" -> _todasMovimentacoes.value.filter { it.tipo == "Entrada" }
+            "Saída" -> _todasMovimentacoes.value.filter { it.tipo == "Saída" }
+            else -> _todasMovimentacoes.value
+        }
+        _movimentacoes.value = movimentacoesFiltradas
+    }
+
+    private fun calcularTotais() {
+        var entradas = 0.0
+        var saidas = 0.0
+
+        for (mov in _todasMovimentacoes.value) {
+            when (mov.tipo) {
+                "Entrada" -> entradas += mov.valor
+                "Saída" -> saidas += mov.valor
+            }
+        }
+
+        _totalEntradas.value = entradas
+        _totalSaidas.value = saidas
+        _saldoTotal.value = entradas - saidas
+    }
 }

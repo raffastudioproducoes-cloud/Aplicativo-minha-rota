@@ -141,6 +141,7 @@ class HojeViewModel : ViewModel() {
         _horaInicioPausa.value = ""
         _horaFimPausa.value = ""
         _corridasAtuais.value = emptyList()
+        _ganhosRapidos.value = emptyList()
     }
 
     fun updateHoraInicio(hora: String) {

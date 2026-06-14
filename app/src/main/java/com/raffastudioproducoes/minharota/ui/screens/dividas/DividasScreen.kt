@@ -11,6 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,6 +29,9 @@ import com.raffastudioproducoes.minharota.ui.theme.VerdeEntrada
 fun DividasScreen(viewModel: DividasViewModel = viewModel()) {
     val context = LocalContext.current
     val dividas by viewModel.dividas.collectAsState()
+    var mostrarDialogoPagamento by remember { mutableStateOf(false) }
+    var dividaSelecionada by remember { mutableStateOf<Divida?>(null) }
+    var valorPagamento by remember { mutableStateOf("") }
 
     LaunchedEffect(Unit) {
         viewModel.carregarDividas(context)
@@ -84,7 +90,11 @@ fun DividasScreen(viewModel: DividasViewModel = viewModel()) {
             items(dividas) { divida ->
                 CardDivida(
                     divida = divida,
-                    onPagarParcela = { id, valor -> viewModel.pagarParcela(context, id, valor) },
+                    onAbrirDialogoPagamento = { 
+                        dividaSelecionada = divida
+                        valorPagamento = ""
+                        mostrarDialogoPagamento = true
+                    },
                     onQuitarDivida = { id -> viewModel.quitarDivida(context, id) }
                 )
             }
@@ -106,10 +116,51 @@ fun DividasScreen(viewModel: DividasViewModel = viewModel()) {
             }
         }
     }
+
+    // AlertDialog para Pagamento Parcial (fora do CardDivida)
+    if (mostrarDialogoPagamento && dividaSelecionada != null) {
+        AlertDialog(
+            onDismissRequest = { mostrarDialogoPagamento = false },
+            title = { Text("Pagar Parcela") },
+            text = {
+                Column {
+                    Text("Credor: ${dividaSelecionada?.credor ?: ""}", style = MaterialTheme.typography.bodySmall)
+                    Text("Saldo devedor: R$ ${String.format("%.2f", dividaSelecionada?.let { it.valorTotal - it.valorPago } ?: 0.0)}", style = MaterialTheme.typography.bodySmall)
+                    Spacer(modifier = Modifier.height(12.dp))
+                    OutlinedTextField(
+                        value = valorPagamento,
+                        onValueChange = { valorPagamento = it },
+                        label = { Text("Valor a Pagar") },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        val valor = valorPagamento.toDoubleOrNull() ?: 0.0
+                        if (valor > 0 && dividaSelecionada != null) {
+                            viewModel.pagarParcela(context, dividaSelecionada!!.id, valor)
+                            mostrarDialogoPagamento = false
+                            dividaSelecionada = null
+                            valorPagamento = ""
+                        }
+                    }
+                ) {
+                    Text("Confirmar")
+                }
+            },
+            dismissButton = {
+                Button(onClick = { mostrarDialogoPagamento = false }) {
+                    Text("Cancelar")
+                }
+            }
+        )
+    }
 }
 
 @Composable
-fun CardDivida(divida: Divida, onPagarParcela: (String, Double) -> Unit, onQuitarDivida: (String) -> Unit) {
+fun CardDivida(divida: Divida, onAbrirDialogoPagamento: () -> Unit, onQuitarDivida: (String) -> Unit) {
     val progresso = (divida.valorPago / divida.valorTotal).toFloat()
 
     Card(
@@ -160,7 +211,7 @@ fun CardDivida(divida: Divida, onPagarParcela: (String, Double) -> Unit, onQuita
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Button(
-                    onClick = { /* TODO: Implementar modal para pagar parcela */ onPagarParcela(divida.id, 0.0) },
+                    onClick = onAbrirDialogoPagamento,
                     enabled = divida.valorPago < divida.valorTotal,
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
                 ) {

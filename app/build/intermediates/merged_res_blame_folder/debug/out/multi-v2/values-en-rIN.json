@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.raffastudioproducoes.minharota.app-mergeDebugResources-45:/values-en-rIN/values-en-rIN.xml",
+            "outputFile": "com.raffastudioproducoes.minharota.app-mergeDebugResources-50:/values-en-rIN/values-en-rIN.xml",
             "map": [
                 {
                     "source": "/home/ubuntu/.gradle/caches/transforms-3/b507ebf679235cba2b2fb5a6ac4fb9ff/transformed/jetified-ui-release/res/values-en-rIN/values-en-rIN.xml",

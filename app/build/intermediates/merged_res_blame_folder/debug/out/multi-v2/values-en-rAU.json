@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.raffastudioproducoes.minharota.app-mergeDebugResources-45:/values-en-rAU/values-en-rAU.xml",
+            "outputFile": "com.raffastudioproducoes.minharota.app-mergeDebugResources-50:/values-en-rAU/values-en-rAU.xml",
             "map": [
                 {
                     "source": "/home/ubuntu/.gradle/caches/transforms-3/bbe11978bb982db8f83ccacc9d8f22fb/transformed/jetified-material3-release/res/values-en-rAU/values-en-rAU.xml",

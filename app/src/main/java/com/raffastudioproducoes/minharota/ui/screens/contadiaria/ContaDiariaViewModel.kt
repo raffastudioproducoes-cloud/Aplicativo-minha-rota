@@ -59,7 +59,7 @@ class ContaDiariaViewModel(application: Application) : AndroidViewModel(applicat
 
         for (conta in _contasDiarias.value) {
             totalDiario += when (conta.frequencia) {
-                "Diário" -> conta.valor
+                "Diario" -> conta.valor
                 "Semanal" -> conta.valor / 7.0
                 "Quinzenal" -> conta.valor / 15.0
                 "Mensal" -> conta.valor / 30.0

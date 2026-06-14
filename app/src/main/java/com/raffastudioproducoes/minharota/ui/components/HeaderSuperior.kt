@@ -28,10 +28,16 @@ import java.util.Locale
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.DrawerState
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.platform.LocalContext
+import com.raffastudioproducoes.minharota.data.local.SharedPreferencesManager
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HeaderSuperior(onDrawerClick: () -> Unit, drawerState: DrawerState? = null) {
+    val context = LocalContext.current
+    val prefsManager = SharedPreferencesManager(context)
+    val nomeUsuario = prefsManager.obterNomeUsuario()
     TopAppBar(
         title = {
             Row(
@@ -56,7 +62,7 @@ fun HeaderSuperior(onDrawerClick: () -> Unit, drawerState: DrawerState? = null) 
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     DatePill()
                     Spacer(modifier = Modifier.width(8.dp))
-                    UserPill("Usuário") // TODO: Obter nome do usuário dinamicamente
+                    UserPill(nomeUsuario)
                 }
             }
         },
