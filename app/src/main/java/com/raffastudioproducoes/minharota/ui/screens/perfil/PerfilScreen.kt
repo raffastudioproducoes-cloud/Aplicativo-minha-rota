@@ -1,6 +1,11 @@
 package com.raffastudioproducoes.minharota.ui.screens.perfil
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -9,6 +14,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.PhotoCamera
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -23,18 +29,42 @@ import com.raffastudioproducoes.minharota.ui.theme.FundoDark
 import com.raffastudioproducoes.minharota.ui.theme.VerdeEntrada
 
 @Composable
-fun PerfilScreen(viewModel: PerfilViewModel = viewModel()) {
+fun PerfilScreen(
+    viewModel: PerfilViewModel = viewModel(),
+    onNavigatePlans: () -> Unit = {},
+    onLogout: () -> Unit = {}
+) {
     val context = LocalContext.current
     val nomeUsuario by viewModel.nomeUsuario.collectAsState()
     val email by viewModel.email.collectAsState()
     val dataAniversario by viewModel.dataAniversario.collectAsState()
+    val fotoPerfilUrl by viewModel.fotoPerfilUrl.collectAsState()
 
     var nomeEditavel by remember { mutableStateOf(false) }
     var emailEditavel by remember { mutableStateOf(false) }
     var dataEditavel by remember { mutableStateOf(false) }
+    var mostrarMenuFoto by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         viewModel.carregarDadosPerfil(context)
+    }
+
+    // Launcher para Galeria
+    val galeriaLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia()
+    ) { uri ->
+        uri?.let {
+            viewModel.atualizarFotoPerfilUrl(it.toString(), context)
+        }
+    }
+
+    // Launcher para Câmera
+    val camaraLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicture()
+    ) { success ->
+        if (success) {
+            // URI já foi salvo no ViewModel
+        }
     }
 
     Column(
@@ -56,19 +86,68 @@ fun PerfilScreen(viewModel: PerfilViewModel = viewModel()) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Foto de Perfil
+        // Foto de Perfil com Botão de Câmera
         Box(
             modifier = Modifier
                 .size(120.dp)
-                .background(color = VerdeEntrada.copy(alpha = 0.1f), shape = CircleShape),
+                .background(color = VerdeEntrada.copy(alpha = 0.1f), shape = CircleShape)
+                .clickable { mostrarMenuFoto = !mostrarMenuFoto },
             contentAlignment = Alignment.Center
         ) {
+            if (fotoPerfilUrl.isEmpty()) {
+                Icon(
+                    imageVector = Icons.Outlined.AccountCircle,
+                    contentDescription = "Foto de Perfil",
+                    modifier = Modifier.size(100.dp),
+                    tint = VerdeEntrada
+                )
+            }
+            
+            // Ícone de câmera sobreposto
             Icon(
-                imageVector = Icons.Outlined.AccountCircle,
-                contentDescription = "Foto de Perfil",
-                modifier = Modifier.size(100.dp),
-                tint = VerdeEntrada
+                imageVector = Icons.Outlined.PhotoCamera,
+                contentDescription = "Alterar Foto",
+                modifier = Modifier
+                    .size(32.dp)
+                    .align(Alignment.BottomEnd)
+                    .background(VerdeEntrada, shape = CircleShape)
+                    .padding(4.dp),
+                tint = FundoDark
             )
+        }
+
+        // Menu de Foto
+        if (mostrarMenuFoto) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color(0xFF1E1E1E), shape = RoundedCornerShape(12.dp))
+                    .padding(12.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                TextButton(
+                    onClick = {
+                        galeriaLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                        mostrarMenuFoto = false
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Escolher da Galeria", color = VerdeEntrada)
+                }
+                Divider(color = Color.White.copy(alpha = 0.1f))
+                TextButton(
+                    onClick = {
+                        val photoUri = Uri.fromFile(
+                            java.io.File(context.cacheDir, "temp_photo.jpg")
+                        )
+                        camaraLauncher.launch(photoUri)
+                        mostrarMenuFoto = false
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Tirar Foto", color = VerdeEntrada)
+                }
+            }
         }
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -105,7 +184,7 @@ fun PerfilScreen(viewModel: PerfilViewModel = viewModel()) {
 
         // Botão Planos Premium
         Button(
-            onClick = { /* Navegar para tela de Planos */ },
+            onClick = onNavigatePlans,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
@@ -121,7 +200,7 @@ fun PerfilScreen(viewModel: PerfilViewModel = viewModel()) {
 
         // Botão Sair
         TextButton(
-            onClick = { /* Logout futuro */ },
+            onClick = onLogout,
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Sair da Conta", color = Color(0xFFE57373), fontWeight = FontWeight.Medium)
@@ -166,7 +245,9 @@ fun PerfilInputField(
             OutlinedTextField(
                 value = if (value == "Não informado") "" else value,
                 onValueChange = onValueChange,
-                modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
                 shape = RoundedCornerShape(12.dp),
                 placeholder = { Text(placeholder, color = Color.Gray) },
                 singleLine = true,

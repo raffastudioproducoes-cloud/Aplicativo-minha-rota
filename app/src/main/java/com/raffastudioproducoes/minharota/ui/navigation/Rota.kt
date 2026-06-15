@@ -10,6 +10,7 @@ import androidx.compose.material.icons.outlined.MoneyOff
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.ReceiptLong
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.Star
 import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class Rota(val route: String, val title: String, val icon: ImageVector) {
@@ -23,6 +24,7 @@ sealed class Rota(val route: String, val title: String, val icon: ImageVector) {
     object ContaDiaria : Rota("contadiaria", "Conta Diária", Icons.Outlined.AccountBalanceWallet)
     object Perfil : Rota("perfil", "Perfil", Icons.Outlined.Person)
     object Configuracoes : Rota("configuracoes", "Configurações", Icons.Outlined.Settings)
+    object Plans : Rota("plans", "Planos", Icons.Outlined.Star)
 }
 
 val itensNavegacao = listOf(

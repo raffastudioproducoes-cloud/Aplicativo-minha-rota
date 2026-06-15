@@ -28,6 +28,7 @@ import com.raffastudioproducoes.minharota.ui.screens.splash.SplashScreen
 import com.raffastudioproducoes.minharota.ui.screens.onboarding.OnboardingScreen
 import com.raffastudioproducoes.minharota.ui.screens.auth.AuthScreen
 import com.raffastudioproducoes.minharota.ui.screens.contadiaria.ContaDiariaScreen
+import com.raffastudioproducoes.minharota.ui.screens.plans.PlansScreen
 
 @Composable
 fun MainAppContent() {
@@ -101,7 +102,23 @@ fun MainAppContent() {
         }
         composable(Rota.Perfil.route) {
             ScaffoldPrincipalPush(navController, hojeViewModel) { padding ->
-                Box(modifier = Modifier.padding(padding)) { PerfilScreen() }
+                Box(modifier = Modifier.padding(padding)) { 
+                    PerfilScreen(
+                        onNavigatePlans = {
+                            navController.navigate(Rota.Plans.route)
+                        },
+                        onLogout = {
+                            navController.navigate("login") {
+                                popUpTo(Rota.Hoje.route) { inclusive = true }
+                            }
+                        }
+                    )
+                }
+            }
+        }
+        composable(Rota.Plans.route) {
+            ScaffoldPrincipalPush(navController, hojeViewModel) { padding ->
+                Box(modifier = Modifier.padding(padding)) { PlansScreen() }
             }
         }
         composable(Rota.Configuracoes.route) {
