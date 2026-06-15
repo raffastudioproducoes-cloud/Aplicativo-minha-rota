@@ -61,10 +61,10 @@
 35        android:extractNativeLibs="false"
 36        android:icon="@mipmap/ic_launcher"
 36-->/home/ubuntu/minha-rota-repo/app/src/main/AndroidManifest.xml:15:9-43
-37        android:label="Minha Rota"
-37-->/home/ubuntu/minha-rota-repo/app/src/main/AndroidManifest.xml:16:9-35
-38        android:roundIcon="@mipmap/ic_launcher_round"
-38-->/home/ubuntu/minha-rota-repo/app/src/main/AndroidManifest.xml:17:9-54
+37        android:label="@string/app_name"
+37-->/home/ubuntu/minha-rota-repo/app/src/main/AndroidManifest.xml:16:9-41
+38        android:roundIcon="@mipmap/ic_launcher"
+38-->/home/ubuntu/minha-rota-repo/app/src/main/AndroidManifest.xml:17:9-48
 39        android:supportsRtl="true"
 39-->/home/ubuntu/minha-rota-repo/app/src/main/AndroidManifest.xml:18:9-35
 40        android:theme="@android:style/Theme.Material.Light.NoActionBar" >

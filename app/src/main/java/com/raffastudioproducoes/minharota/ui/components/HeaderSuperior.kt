@@ -30,6 +30,9 @@ import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.DrawerState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.foundation.Image
+import androidx.compose.ui.res.painterResource
+import com.raffastudioproducoes.minharota.R
 import com.raffastudioproducoes.minharota.data.local.SharedPreferencesManager
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -46,17 +49,12 @@ fun HeaderSuperior(onDrawerClick: () -> Unit, drawerState: DrawerState? = null) 
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        text = "MinhaRota",
-                        style = MaterialTheme.typography.headlineSmall,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = "v1.5.0-beta",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_minharota_logo_full),
+                        contentDescription = "MinhaRota PRO Logo",
+                        modifier = Modifier
+                            .width(120.dp)
+                            .padding(end = 8.dp)
                     )
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {

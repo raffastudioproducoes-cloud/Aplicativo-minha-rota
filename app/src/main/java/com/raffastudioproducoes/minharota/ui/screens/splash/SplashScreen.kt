@@ -30,6 +30,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.Image
+import androidx.compose.ui.res.painterResource
+import com.raffastudioproducoes.minharota.R
 import com.raffastudioproducoes.minharota.ui.theme.FundoDark
 import com.raffastudioproducoes.minharota.ui.theme.VerdeEntrada
 import kotlinx.coroutines.delay
@@ -50,23 +53,11 @@ fun SplashScreen(onFinish: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        // Logotipo
-        Icon(
-            imageVector = Icons.Outlined.DirectionsCar,
-            contentDescription = "MinhaRota Logo",
-            modifier = Modifier.size(80.dp),
-            tint = VerdeEntrada
-        )
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // Nome do App
-        Text(
-            text = "MinhaRota",
-            style = MaterialTheme.typography.headlineLarge,
-            fontWeight = FontWeight.Bold,
-            color = Color.White,
-            fontSize = 36.sp
+        // Logotipo com novo branding
+        Image(
+            painter = painterResource(id = R.drawable.ic_minharota_logo_full),
+            contentDescription = "MinhaRota PRO Logo",
+            modifier = Modifier.size(200.dp)
         )
 
         Spacer(modifier = Modifier.height(48.dp))

@@ -12,6 +12,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.Image
+import androidx.compose.ui.res.painterResource
+import com.raffastudioproducoes.minharota.R
 import com.raffastudioproducoes.minharota.ui.theme.FundoDark
 import com.raffastudioproducoes.minharota.ui.theme.VerdeEntrada
 
@@ -30,23 +33,13 @@ fun AuthScreen(onAuthSuccess: () -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            // Logo Minimalista
-            Text(
-                text = "◯",
-                fontSize = 64.sp,
-                fontWeight = FontWeight.Thin,
-                color = VerdeEntrada,
-                modifier = Modifier.padding(bottom = 16.dp)
-            )
-
-            // Título
-            Text(
-                text = "Minha Rota",
-                fontSize = 32.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.White,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(bottom = 8.dp)
+            // Logo MinhaRota PRO
+            Image(
+                painter = painterResource(id = R.drawable.ic_minharota_logo_full),
+                contentDescription = "MinhaRota PRO Logo",
+                modifier = Modifier
+                    .size(240.dp)
+                    .padding(bottom = 32.dp)
             )
 
             // Subtítulo

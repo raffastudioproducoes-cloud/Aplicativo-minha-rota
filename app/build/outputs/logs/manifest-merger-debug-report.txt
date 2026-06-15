@@ -163,9 +163,9 @@ MERGED from [com.google.android.odml:image:1.0.0-beta1] /home/ubuntu/.gradle/cac
 	android:supportsRtl
 		ADDED from /home/ubuntu/minha-rota-repo/app/src/main/AndroidManifest.xml:18:9-35
 	android:label
-		ADDED from /home/ubuntu/minha-rota-repo/app/src/main/AndroidManifest.xml:16:9-35
+		ADDED from /home/ubuntu/minha-rota-repo/app/src/main/AndroidManifest.xml:16:9-41
 	android:roundIcon
-		ADDED from /home/ubuntu/minha-rota-repo/app/src/main/AndroidManifest.xml:17:9-54
+		ADDED from /home/ubuntu/minha-rota-repo/app/src/main/AndroidManifest.xml:17:9-48
 	android:icon
 		ADDED from /home/ubuntu/minha-rota-repo/app/src/main/AndroidManifest.xml:15:9-43
 	android:allowBackup
